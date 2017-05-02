@@ -150,7 +150,7 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnAgregarImplicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnAgregarDobleImplicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAgregarY, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,7 +172,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(btnAgregarImplicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnAgregarDobleImplicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
@@ -256,6 +256,11 @@ public class Principal extends javax.swing.JFrame {
         txtInsertarFormula.setColumns(20);
         txtInsertarFormula.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         txtInsertarFormula.setRows(5);
+        txtInsertarFormula.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtInsertarFormulaMouseClicked(evt);
+            }
+        });
         txtInsertarFormula.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtInsertarFormulaKeyPressed(evt);
@@ -480,6 +485,11 @@ public class Principal extends javax.swing.JFrame {
         txtInsertarFormula.setCaretPosition((int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
         
     }//GEN-LAST:event_btnPosicionarCursorActionPerformed
+
+    private void txtInsertarFormulaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtInsertarFormulaMouseClicked
+        // TODO add your handling code here:
+        txtInsertarFormula.setCaretPosition((int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
+    }//GEN-LAST:event_txtInsertarFormulaMouseClicked
 
     /**
      * @param args the command line arguments
