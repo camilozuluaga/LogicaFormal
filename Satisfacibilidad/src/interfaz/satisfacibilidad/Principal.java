@@ -23,6 +23,7 @@ public class Principal extends javax.swing.JFrame {
      */
     Robot robot;
     LogicaSatisfacibilidad logicaSatisfacibilidad;
+    GenerarTabla generar;
 
     public Principal() {
         initComponents();
@@ -36,6 +37,7 @@ public class Principal extends javax.swing.JFrame {
         setLocationRelativeTo(this);
         this.setResizable(false);
         txtInsertarFormula.setEditable(false);
+        txtFormulasProposicionales.setEditable(false);
     }
 
     /**
@@ -61,13 +63,22 @@ public class Principal extends javax.swing.JFrame {
         btnAgregarQ = new javax.swing.JButton();
         btnAgregarR = new javax.swing.JButton();
         btnAgregarS = new javax.swing.JButton();
+        btnAgregarT = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtInsertarFormula = new javax.swing.JTextArea();
         btnBorrar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtFormulasProposicionales = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnAgregarFormula.setText("Agregar");
+        btnAgregarFormula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarFormulaActionPerformed(evt);
+            }
+        });
 
         btnGenerarTabla.setText("Generar Tabla");
         btnGenerarTabla.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +88,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnVerificarSatisfa.setText("Verificar Satisfacibilidad");
+        btnVerificarSatisfa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerificarSatisfaActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Operadores logicos"));
 
@@ -196,6 +212,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnAgregarT.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnAgregarT.setText("T");
+        btnAgregarT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarTActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -209,17 +233,21 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(btnAgregarR)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAgregarS)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAgregarT)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAgregarP)
-                    .addComponent(btnAgregarQ)
-                    .addComponent(btnAgregarR)
-                    .addComponent(btnAgregarS))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnAgregarT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAgregarP)
+                        .addComponent(btnAgregarQ)
+                        .addComponent(btnAgregarR)
+                        .addComponent(btnAgregarS)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -240,6 +268,28 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        txtFormulasProposicionales.setColumns(20);
+        txtFormulasProposicionales.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        txtFormulasProposicionales.setRows(5);
+        jScrollPane2.setViewportView(txtFormulasProposicionales);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -247,19 +297,24 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnGenerarTabla)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnVerificarSatisfa)
+                                .addGap(131, 131, 131)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAgregarFormula, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                            .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGenerarTabla)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnVerificarSatisfa)
-                        .addGap(131, 131, 131)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAgregarFormula, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
-                    .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -271,7 +326,9 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -285,24 +342,28 @@ public class Principal extends javax.swing.JFrame {
                                     .addComponent(btnGenerarTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(114, Short.MAX_VALUE))
+                                .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(52, 52, 52)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTablaActionPerformed
-        // TODO add your handling code here:
+        logicaSatisfacibilidad.ponerTabla();
+        if (logicaSatisfacibilidad.getAgregarFormula().size() >= 3) {
+            System.out.println("algo");
+            generar = new GenerarTabla(logicaSatisfacibilidad.getAgregarFormula());
+        }
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
 
     private void btnAgregarNegacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarNegacionActionPerformed
 
         txtInsertarFormula.insert("~()", txtInsertarFormula.getCaretPosition());
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
-        logicaSatisfacibilidad.getAgrego().add("~()");
+        logicaSatisfacibilidad.getLetrasAgregadas().add("~()");
 
     }//GEN-LAST:event_btnAgregarNegacionActionPerformed
 
@@ -310,7 +371,7 @@ public class Principal extends javax.swing.JFrame {
 
         txtInsertarFormula.insert("()^()", txtInsertarFormula.getCaretPosition());
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
-        logicaSatisfacibilidad.getAgrego().add("()^()");
+        logicaSatisfacibilidad.getLetrasAgregadas().add("()^()");
 
     }//GEN-LAST:event_btnAgregarYActionPerformed
 
@@ -318,7 +379,7 @@ public class Principal extends javax.swing.JFrame {
 
         txtInsertarFormula.insert("()v()", txtInsertarFormula.getCaretPosition());
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
-        logicaSatisfacibilidad.getAgrego().add("()v()");
+        logicaSatisfacibilidad.getLetrasAgregadas().add("()v()");
 
     }//GEN-LAST:event_btnAgregarOActionPerformed
 
@@ -326,7 +387,7 @@ public class Principal extends javax.swing.JFrame {
 
         txtInsertarFormula.insert("()->()", txtInsertarFormula.getCaretPosition());
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
-        logicaSatisfacibilidad.getAgrego().add("()->()");
+        logicaSatisfacibilidad.getLetrasAgregadas().add("()->()");
 
     }//GEN-LAST:event_btnAgregarImplicacionActionPerformed
 
@@ -334,35 +395,35 @@ public class Principal extends javax.swing.JFrame {
 
         txtInsertarFormula.insert("()<->()", txtInsertarFormula.getCaretPosition());
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
-        logicaSatisfacibilidad.getAgrego().add("()<->()");
+        logicaSatisfacibilidad.getLetrasAgregadas().add("()<->()");
 
     }//GEN-LAST:event_btnAgregarDobleImplicacionActionPerformed
 
     private void btnAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPActionPerformed
 
         txtInsertarFormula.insert("P", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
-        logicaSatisfacibilidad.getAgrego().add("P");
+        logicaSatisfacibilidad.getLetrasAgregadas().add("P");
 
     }//GEN-LAST:event_btnAgregarPActionPerformed
 
     private void btnAgregarQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarQActionPerformed
 
         txtInsertarFormula.insert("Q", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
-        logicaSatisfacibilidad.getAgrego().add("Q");
+        logicaSatisfacibilidad.getLetrasAgregadas().add("Q");
 
     }//GEN-LAST:event_btnAgregarQActionPerformed
 
     private void btnAgregarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarRActionPerformed
 
         txtInsertarFormula.insert("R", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
-        logicaSatisfacibilidad.getAgrego().add("R");
+        logicaSatisfacibilidad.getLetrasAgregadas().add("R");
 
     }//GEN-LAST:event_btnAgregarRActionPerformed
 
     private void btnAgregarSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSActionPerformed
 
         txtInsertarFormula.insert("S", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
-        logicaSatisfacibilidad.getAgrego().add("S");
+        logicaSatisfacibilidad.getLetrasAgregadas().add("S");
 
     }//GEN-LAST:event_btnAgregarSActionPerformed
 
@@ -371,14 +432,34 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtInsertarFormulaKeyPressed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        if (!logicaSatisfacibilidad.getAgrego().empty()) {
-            String borrar = logicaSatisfacibilidad.getAgrego().pop();
+        if (!logicaSatisfacibilidad.getLetrasAgregadas().empty()) {
+            String borrar = logicaSatisfacibilidad.getLetrasAgregadas().pop();
             txtInsertarFormula.setText(txtInsertarFormula.getText().replace(borrar, ""));
             if (txtInsertarFormula.getText().contains(")")) {
                 txtInsertarFormula.setCaretPosition(txtInsertarFormula.getText().indexOf(")"));
             }
         }
     }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void btnAgregarFormulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarFormulaActionPerformed
+        if (txtInsertarFormula.getText().length() >= 4) {
+            logicaSatisfacibilidad.getAgregarFormula().add(txtInsertarFormula.getText());
+            txtFormulasProposicionales.append(txtInsertarFormula.getText());
+            txtFormulasProposicionales.append("\n");
+            txtInsertarFormula.setText("");
+        }
+    }//GEN-LAST:event_btnAgregarFormulaActionPerformed
+
+    private void btnVerificarSatisfaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarSatisfaActionPerformed
+        if (logicaSatisfacibilidad.getAgregarFormula().size() >= 3) {
+            System.out.println("algo");
+        }
+    }//GEN-LAST:event_btnVerificarSatisfaActionPerformed
+
+    private void btnAgregarTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTActionPerformed
+        txtInsertarFormula.insert("T", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
+        logicaSatisfacibilidad.getLetrasAgregadas().add("T");
+    }//GEN-LAST:event_btnAgregarTActionPerformed
 
     /**
      * @param args the command line arguments
@@ -425,13 +506,17 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregarQ;
     private javax.swing.JButton btnAgregarR;
     private javax.swing.JButton btnAgregarS;
+    private javax.swing.JButton btnAgregarT;
     private javax.swing.JButton btnAgregarY;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnGenerarTabla;
     private javax.swing.JButton btnVerificarSatisfa;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea txtFormulasProposicionales;
     private javax.swing.JTextArea txtInsertarFormula;
     // End of variables declaration//GEN-END:variables
 
