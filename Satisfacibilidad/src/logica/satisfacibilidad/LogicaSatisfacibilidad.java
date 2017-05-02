@@ -8,7 +8,9 @@ package logica.satisfacibilidad;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -39,6 +41,8 @@ public class LogicaSatisfacibilidad {
      */
     Queue<String> agregarFormula;
 
+    DefaultTableModel modeloTabla;
+
     public Queue<String> getAgregarFormula() {
         return agregarFormula;
     }
@@ -55,6 +59,7 @@ public class LogicaSatisfacibilidad {
         this.letrasAgregadas = letrasAgregadas;
     }
     int contador;
+    int posicionesBoton;
 
     public LogicaSatisfacibilidad() {
         posiciones = new LinkedList<>();
@@ -63,6 +68,8 @@ public class LogicaSatisfacibilidad {
         letrasAgregadas = new Stack<>();
         letrasAgregadas.add("");
         this.contador = 0;
+        modeloTabla = new DefaultTableModel();
+        this.posicionesBoton = 1;
 
     }
 
@@ -87,12 +94,44 @@ public class LogicaSatisfacibilidad {
      * @return la posicion en donde se va a poner la siguiente letra
      */
     public int ubicarCursorConLetra(JTextArea txtInsertarFormula) {
-        obtenerPosiciones(txtInsertarFormula);
+        this.posiciones = obtenerPosiciones(txtInsertarFormula);
         int pos = 0;
         if (!posiciones.isEmpty()) {
             pos = posiciones.poll();
         }
         return pos;
+    }
+
+    /**
+     * metodo que retorna en que posicion se va a poner la letra siguente se
+     * llama al metodo anterior para saber las posiciones
+     *
+     * @param txtInsertarFormula, para pasarselo al metodo anterios, para que el
+     * recorra y nos diga la posicion
+     * @return la posicion en donde se va a poner la siguiente letra
+     */
+    public Object ubicarCursorConBoton(JTextArea txtInsertarFormula) {
+        Queue<Integer> posicionesBotonCola = obtenerPosiciones(txtInsertarFormula);
+        if (!posicionesBotonCola.isEmpty()) {
+            Object[] posicionesArreglo = posicionesBotonCola.toArray();
+            
+            return posicionesArreglo[sumarContador(posicionesBotonCola)];
+        }
+        return 0;
+    }
+
+    /**
+     * metodo que nos permite saber si podemos sumar el contador, para poder
+     * obtener las posiciones donde podemos ubicar el cursos
+     *
+     * @param posicionesBotonCola, cola donde sabemos cual es el size
+     * @return el contador sumado o cero si no puede sumar mas
+     */
+    public int sumarContador(Queue<Integer> posicionesBotonCola) {
+        if (this.posicionesBoton < posicionesBotonCola.size()) {
+            return this.posicionesBoton++;
+        }
+        return this.posicionesBoton = 0;
     }
 
     /**
@@ -102,30 +141,39 @@ public class LogicaSatisfacibilidad {
      *
      * @param txtInsertarFormula, para iterar y poder saber las posiciones de
      * las ObtenerLetras
+     * @return
      */
-    public void obtenerPosiciones(JTextArea txtInsertarFormula) {
-        posiciones.clear();
+    public Queue<Integer> obtenerPosiciones(JTextArea txtInsertarFormula) {
+        Queue<Integer> posicionMetodo = new LinkedList<>();
         char[] arregloLetras = txtInsertarFormula.getText().toCharArray();
         int posicion = 0;
 
         for (int i = 0; i < arregloLetras.length; i++) {
             letra.add(arregloLetras[i]);
         }
-
-        char primerCaracter = letra.poll();
-        char aux1 = primerCaracter;
-        do {
-            if (primerCaracter == ')' && aux1 == '(') {
-                posiciones.add(posicion);
+        if (!letra.isEmpty()) {
+            char primerCaracter = letra.poll();
+            char aux1 = primerCaracter;
+            while (!letra.isEmpty()) {
+                if (primerCaracter == ')' && aux1 == '(') {
+                    posicionMetodo.add(posicion);
+                }
+                aux1 = primerCaracter;
+                primerCaracter = letra.poll();
+                posicion++;
             }
-            aux1 = primerCaracter;
-            primerCaracter = letra.poll();
-            posicion++;
-        } while (!letra.isEmpty());
-
-        posiciones.add(posicion);
+            posicionMetodo.add(posicion);
+            return posicionMetodo;
+        }
+        return posicionMetodo;
     }
 
+    /**
+     * metodo que nos permite saber cuales son las letras que tienen las
+     * formulas proposicionales
+     *
+     * @return una cola, con las letras proposicionales
+     */
     public Queue<Character> ObtenerLetras() {
         Queue<Character> letras = new LinkedList<>();
         letras.add(' ');
@@ -145,18 +193,55 @@ public class LogicaSatisfacibilidad {
         return letras;
     }
 
-    public void ponerTabla() {
+    /**
+     * metodo que nos permite generar la forma de la tabla, de acuerdo al numero
+     * de letras que tiene la formula
+     */
+    public void ponerTabla(JTable tabla) {
+
         Queue<Character> letras = ObtenerLetras();
         double a = Math.pow(2, letras.size() - 1);
-        double longitud = a;
         letras.poll();
+        this.contador = 1;
         while (!letras.isEmpty()) {
-            System.out.print("\t \t" + letras.poll());
-            for (int i = 0; i < longitud; i++) {
-                System.out.println("1");
-            }
+            modeloTabla.addRow(new Object[]{letras.poll()});
             a = a / 2;
+            for (int i = 0; i < contador; i++) {
+                ponerUnos(a);
+                ponerCeros(a);
+            }
+            contador++;
+        }
+        tabla.setModel(modeloTabla);
+    }
 
+    /**
+     * metodo que nos permite generar los unos que van en la tabla de verdad.
+     *
+     * @param veces, el numero de veces que se va a poner el numero
+     */
+    public void ponerUnos(double veces) {
+        if (veces == 0) {
+            System.out.print("");
+        } else {
+            ponerUnos(veces - 1);
+            modeloTabla.addColumn("1");
+            System.out.println(1);
+        }
+    }
+
+    /**
+     * metodo que nos permite generar los ceros que van en la tabla de verdad.
+     *
+     * @param veces, el numero de veces que se va a poner el numero
+     */
+    public void ponerCeros(double veces) {
+        if (veces == 0) {
+            System.out.print("");
+        } else {
+            ponerCeros(veces - 1);
+            modeloTabla.addColumn("0");
+            System.out.println(0);
         }
     }
 

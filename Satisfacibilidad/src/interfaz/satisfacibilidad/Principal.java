@@ -7,6 +7,7 @@ package interfaz.satisfacibilidad;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.EmptyStackException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,6 +71,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtFormulasProposicionales = new javax.swing.JTextArea();
+        btnPosicionarCursor = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -290,6 +292,13 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        btnPosicionarCursor.setText("Posicionar Cursor");
+        btnPosicionarCursor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPosicionarCursorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -308,9 +317,10 @@ public class Principal extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnVerificarSatisfa)
                                 .addGap(131, 131, 131)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnAgregarFormula, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
-                            .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnPosicionarCursor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -342,8 +352,10 @@ public class Principal extends javax.swing.JFrame {
                                     .addComponent(btnGenerarTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(52, 52, 52)
+                                .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPosicionarCursor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -352,16 +364,18 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTablaActionPerformed
-        logicaSatisfacibilidad.ponerTabla();
-        if (logicaSatisfacibilidad.getAgregarFormula().size() >= 3) {
+
+        if (logicaSatisfacibilidad.getAgregarFormula().size() >= 1) {
             System.out.println("algo");
-            generar = new GenerarTabla(logicaSatisfacibilidad.getAgregarFormula());
+            generar = new GenerarTabla();
+            this.setVisible(false);
+            generar.setVisible(true);
         }
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
 
     private void btnAgregarNegacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarNegacionActionPerformed
 
-        txtInsertarFormula.insert("~()", txtInsertarFormula.getCaretPosition());
+        txtInsertarFormula.insert("~()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("~()");
 
@@ -369,7 +383,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnAgregarYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarYActionPerformed
 
-        txtInsertarFormula.insert("()^()", txtInsertarFormula.getCaretPosition());
+        txtInsertarFormula.insert("()^()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("()^()");
 
@@ -377,7 +391,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnAgregarOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarOActionPerformed
 
-        txtInsertarFormula.insert("()v()", txtInsertarFormula.getCaretPosition());
+        txtInsertarFormula.insert("()v()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("()v()");
 
@@ -385,7 +399,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnAgregarImplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImplicacionActionPerformed
 
-        txtInsertarFormula.insert("()->()", txtInsertarFormula.getCaretPosition());
+        txtInsertarFormula.insert("()->()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("()->()");
 
@@ -393,7 +407,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnAgregarDobleImplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarDobleImplicacionActionPerformed
 
-        txtInsertarFormula.insert("()<->()", txtInsertarFormula.getCaretPosition());
+        txtInsertarFormula.insert("()<->()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
         logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("()<->()");
 
@@ -461,6 +475,12 @@ public class Principal extends javax.swing.JFrame {
         logicaSatisfacibilidad.getLetrasAgregadas().add("T");
     }//GEN-LAST:event_btnAgregarTActionPerformed
 
+    private void btnPosicionarCursorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPosicionarCursorActionPerformed
+        
+        txtInsertarFormula.setCaretPosition((int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
+        
+    }//GEN-LAST:event_btnPosicionarCursorActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -510,6 +530,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregarY;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnGenerarTabla;
+    private javax.swing.JButton btnPosicionarCursor;
     private javax.swing.JButton btnVerificarSatisfa;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
