@@ -61,6 +61,14 @@ public class LogicaSatisfacibilidad {
     int contador;
     int posicionesBoton;
 
+    public int getPosicionesBoton() {
+        return posicionesBoton;
+    }
+
+    public void setPosicionesBoton(int posicionesBoton) {
+        this.posicionesBoton = posicionesBoton;
+    }
+
     public LogicaSatisfacibilidad() {
         posiciones = new LinkedList<>();
         letra = new LinkedList<>();
@@ -69,20 +77,8 @@ public class LogicaSatisfacibilidad {
         letrasAgregadas.add("");
         this.contador = 0;
         modeloTabla = new DefaultTableModel();
-        this.posicionesBoton = 1;
+        this.posicionesBoton = 0;
 
-    }
-
-    /**
-     * metodo que nos permite ubicar los parentesis con sus operadores logicos,
-     * para que sea mas organizado
-     *
-     * @param txtInsertarFormula, donde obtenemos los caracteres para seguir un
-     * patron.s
-     */
-    public void ubicarCursor(JTextArea txtInsertarFormula) {
-        String texto = txtInsertarFormula.getText();
-        txtInsertarFormula.setCaretPosition(texto.indexOf(")"));
     }
 
     /**
@@ -114,7 +110,6 @@ public class LogicaSatisfacibilidad {
         Queue<Integer> posicionesBotonCola = obtenerPosiciones(txtInsertarFormula);
         if (!posicionesBotonCola.isEmpty()) {
             Object[] posicionesArreglo = posicionesBotonCola.toArray();
-            
             return posicionesArreglo[sumarContador(posicionesBotonCola)];
         }
         return 0;
@@ -128,7 +123,7 @@ public class LogicaSatisfacibilidad {
      * @return el contador sumado o cero si no puede sumar mas
      */
     public int sumarContador(Queue<Integer> posicionesBotonCola) {
-        if (this.posicionesBoton < posicionesBotonCola.size()) {
+        if (this.posicionesBoton < posicionesBotonCola.size()-1) {
             return this.posicionesBoton++;
         }
         return this.posicionesBoton = 0;

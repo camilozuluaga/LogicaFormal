@@ -7,8 +7,6 @@ package interfaz.satisfacibilidad;
 
 import java.awt.AWTException;
 import java.awt.Robot;
-import java.awt.event.KeyEvent;
-import java.util.EmptyStackException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.satisfacibilidad.LogicaSatisfacibilidad;
@@ -381,7 +379,6 @@ public class Principal extends javax.swing.JFrame {
     private void btnAgregarNegacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarNegacionActionPerformed
 
         txtInsertarFormula.insert("~()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("~()");
 
     }//GEN-LAST:event_btnAgregarNegacionActionPerformed
@@ -389,7 +386,6 @@ public class Principal extends javax.swing.JFrame {
     private void btnAgregarYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarYActionPerformed
 
         txtInsertarFormula.insert("()^()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("()^()");
 
     }//GEN-LAST:event_btnAgregarYActionPerformed
@@ -397,7 +393,6 @@ public class Principal extends javax.swing.JFrame {
     private void btnAgregarOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarOActionPerformed
 
         txtInsertarFormula.insert("()v()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("()v()");
 
     }//GEN-LAST:event_btnAgregarOActionPerformed
@@ -405,7 +400,6 @@ public class Principal extends javax.swing.JFrame {
     private void btnAgregarImplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImplicacionActionPerformed
 
         txtInsertarFormula.insert("()->()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("()->()");
 
     }//GEN-LAST:event_btnAgregarImplicacionActionPerformed
@@ -413,7 +407,6 @@ public class Principal extends javax.swing.JFrame {
     private void btnAgregarDobleImplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarDobleImplicacionActionPerformed
 
         txtInsertarFormula.insert("()<->()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula);
         logicaSatisfacibilidad.getLetrasAgregadas().add("()<->()");
 
     }//GEN-LAST:event_btnAgregarDobleImplicacionActionPerformed
@@ -481,7 +474,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarTActionPerformed
 
     private void btnPosicionarCursorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPosicionarCursorActionPerformed
-        
+        logicaSatisfacibilidad.setPosicionesBoton(1);
         txtInsertarFormula.setCaretPosition((int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
         
     }//GEN-LAST:event_btnPosicionarCursorActionPerformed
