@@ -5,6 +5,7 @@
  */
 package logica.satisfacibilidad;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -252,6 +253,17 @@ public class LogicaSatisfacibilidad {
             ponerCeros(veces - 1);
             modeloTabla.addColumn("0");
             System.out.println(0);
+        }
+    }
+
+    public void obtenerFormulas() {
+        String arregloFormulas[] = getAgregarFormula().toString().split(",");
+        for (int i = 0; i < arregloFormulas.length; i++) {
+            System.out.println(arregloFormulas[i]);
+        }
+        ArrayList<String> formulas = new ArrayList<>();
+        for (int i = 0; i < arregloFormulas.length; i++) {
+            formulas.add(arregloFormulas[i]);
         }
     }
 

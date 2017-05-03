@@ -451,6 +451,7 @@ public class Principal extends javax.swing.JFrame {
     private void btnVerificarSatisfaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarSatisfaActionPerformed
         if (logicaSatisfacibilidad.getAgregarFormula().size() >= 3) {
             System.out.println("algo");
+            
         }
     }//GEN-LAST:event_btnVerificarSatisfaActionPerformed
 
