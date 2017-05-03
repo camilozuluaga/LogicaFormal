@@ -24,7 +24,7 @@ public class Principal extends javax.swing.JFrame {
     LogicaSatisfacibilidad logicaSatisfacibilidad;
     GenerarTabla generar;
     int posicionRetornaBoton = 0;
-    
+
     public Principal() {
         initComponents();
         logicaSatisfacibilidad = new LogicaSatisfacibilidad();
@@ -390,7 +390,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTablaActionPerformed
-        
+
         if (logicaSatisfacibilidad.getAgregarFormula().size() >= 1) {
             System.out.println("algo");
             generar = new GenerarTabla();
@@ -420,28 +420,28 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarDobleImplicacionActionPerformed
 
     private void btnAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPActionPerformed
-        
+
         txtInsertarFormula.insert("P", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
         logicaSatisfacibilidad.getLetrasAgregadas().add("P");
 
     }//GEN-LAST:event_btnAgregarPActionPerformed
 
     private void btnAgregarQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarQActionPerformed
-        
+
         txtInsertarFormula.insert("Q", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
         logicaSatisfacibilidad.getLetrasAgregadas().add("Q");
 
     }//GEN-LAST:event_btnAgregarQActionPerformed
 
     private void btnAgregarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarRActionPerformed
-        
+
         txtInsertarFormula.insert("R", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
         logicaSatisfacibilidad.getLetrasAgregadas().add("R");
 
     }//GEN-LAST:event_btnAgregarRActionPerformed
 
     private void btnAgregarSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSActionPerformed
-        
+
         txtInsertarFormula.insert("S", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
         logicaSatisfacibilidad.getLetrasAgregadas().add("S");
 
@@ -458,6 +458,9 @@ public class Principal extends javax.swing.JFrame {
             if (txtInsertarFormula.getText().contains(")")) {
                 txtInsertarFormula.setCaretPosition(txtInsertarFormula.getText().indexOf(")"));
             }
+        } else {
+            lblPosicionCursor.setVisible(false);
+            lblPosicion.setVisible(false);
         }
     }//GEN-LAST:event_btnBorrarActionPerformed
 
@@ -473,7 +476,7 @@ public class Principal extends javax.swing.JFrame {
     private void btnVerificarSatisfaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarSatisfaActionPerformed
         if (logicaSatisfacibilidad.getAgregarFormula().size() >= 3) {
             System.out.println("algo");
-            
+
         }
     }//GEN-LAST:event_btnVerificarSatisfaActionPerformed
 
@@ -487,6 +490,7 @@ public class Principal extends javax.swing.JFrame {
         lblPosicionCursor.setVisible(true);
         lblPosicion.setVisible(true);
         lblPosicion.setText(String.valueOf(this.logicaSatisfacibilidad.getPosicionesBoton()));
+        
     }//GEN-LAST:event_btnPosicionarCursorActionPerformed
 
     private void txtInsertarFormulaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtInsertarFormulaMouseClicked
@@ -557,12 +561,17 @@ public class Principal extends javax.swing.JFrame {
 
     public void agregarOperadoresLogicos(String formula) {
         if (this.posicionRetornaBoton != 0) {
+            if (txtInsertarFormula.getText().length() == 0) {
+                this.posicionRetornaBoton = 0;
+            }
             txtInsertarFormula.insert(formula, this.posicionRetornaBoton);
         } else {
             txtInsertarFormula.insert(formula, logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula));
         }
         logicaSatisfacibilidad.getLetrasAgregadas().add(formula);
+        lblPosicionCursor.setVisible(false);
+        lblPosicion.setVisible(false);
         this.posicionRetornaBoton = 0;
     }
-    
+
 }

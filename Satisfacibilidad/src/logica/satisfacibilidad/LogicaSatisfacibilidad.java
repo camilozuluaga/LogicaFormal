@@ -121,7 +121,6 @@ public class LogicaSatisfacibilidad {
             Object[] posicionesArreglo = posicionesBotonCola.toArray();
             return (int) posicionesArreglo[sumarContador(posicionesBotonCola)];
         }
-        this.posicionesBoton = 0;
         return this.posicionesBoton;
     }
 
@@ -135,10 +134,8 @@ public class LogicaSatisfacibilidad {
     public int sumarContador(Queue<Integer> posicionesBotonCola) {
 
         if (this.posicionesBoton <= posicionesBotonCola.size() - 1) {
-            System.out.println(this.posicionesBoton);
             return this.posicionesBoton++;
         }
-        System.out.println(this.posicionesBoton);
         this.posicionesBoton = 0;
         return this.posicionesBoton;
 
