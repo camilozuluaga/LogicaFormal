@@ -98,6 +98,14 @@ public class LogicaSatisfacibilidad {
         return pos;
     }
 
+    public int ubicarCursor(JTextArea txtInsertarFormula) {
+
+        if (txtInsertarFormula.getText().contains(")")) {
+            return txtInsertarFormula.getText().indexOf(")");
+        }
+        return 0;
+    }
+
     /**
      * metodo que retorna en que posicion se va a poner la letra siguente se
      * llama al metodo anterior para saber las posiciones
@@ -110,7 +118,14 @@ public class LogicaSatisfacibilidad {
         Queue<Integer> posicionesBotonCola = obtenerPosiciones(txtInsertarFormula);
         if (!posicionesBotonCola.isEmpty()) {
             Object[] posicionesArreglo = posicionesBotonCola.toArray();
-            return posicionesArreglo[sumarContador(posicionesBotonCola)];
+            if (sumarContador(posicionesBotonCola)) {
+
+                return (int) posicionesArreglo[this.posicionesBoton];
+            } else {
+                this.posicionesBoton = 0;
+                return this.posicionesBoton;
+            }
+
         }
         return 0;
     }
@@ -122,11 +137,11 @@ public class LogicaSatisfacibilidad {
      * @param posicionesBotonCola, cola donde sabemos cual es el size
      * @return el contador sumado o cero si no puede sumar mas
      */
-    public int sumarContador(Queue<Integer> posicionesBotonCola) {
-        if (this.posicionesBoton < posicionesBotonCola.size()-1) {
-            return this.posicionesBoton++;
+    public boolean sumarContador(Queue<Integer> posicionesBotonCola) {
+        if (this.posicionesBoton <= posicionesBotonCola.size() - 1) {
+            return true;
         }
-        return this.posicionesBoton = 0;
+        return false;
     }
 
     /**

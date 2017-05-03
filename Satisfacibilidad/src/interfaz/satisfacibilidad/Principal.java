@@ -23,7 +23,8 @@ public class Principal extends javax.swing.JFrame {
     Robot robot;
     LogicaSatisfacibilidad logicaSatisfacibilidad;
     GenerarTabla generar;
-
+    int posicionRetornaBoton = 0;
+    
     public Principal() {
         initComponents();
         logicaSatisfacibilidad = new LogicaSatisfacibilidad();
@@ -367,7 +368,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTablaActionPerformed
-
+        
         if (logicaSatisfacibilidad.getAgregarFormula().size() >= 1) {
             System.out.println("algo");
             generar = new GenerarTabla();
@@ -377,63 +378,48 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
 
     private void btnAgregarNegacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarNegacionActionPerformed
-
-        txtInsertarFormula.insert("~()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.getLetrasAgregadas().add("~()");
-
+        agregarOperadoresLogicos("~()");
     }//GEN-LAST:event_btnAgregarNegacionActionPerformed
 
     private void btnAgregarYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarYActionPerformed
-
-        txtInsertarFormula.insert("()^()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.getLetrasAgregadas().add("()^()");
-
+        agregarOperadoresLogicos("()^()");
     }//GEN-LAST:event_btnAgregarYActionPerformed
 
     private void btnAgregarOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarOActionPerformed
-
-        txtInsertarFormula.insert("()v()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.getLetrasAgregadas().add("()v()");
-
+        agregarOperadoresLogicos("()v()");
     }//GEN-LAST:event_btnAgregarOActionPerformed
 
     private void btnAgregarImplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImplicacionActionPerformed
-
-        txtInsertarFormula.insert("()->()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.getLetrasAgregadas().add("()->()");
-
+        agregarOperadoresLogicos("()->()");
     }//GEN-LAST:event_btnAgregarImplicacionActionPerformed
 
     private void btnAgregarDobleImplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarDobleImplicacionActionPerformed
-
-        txtInsertarFormula.insert("()<->()", (int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        logicaSatisfacibilidad.getLetrasAgregadas().add("()<->()");
-
+        agregarOperadoresLogicos("()<->()");
     }//GEN-LAST:event_btnAgregarDobleImplicacionActionPerformed
 
     private void btnAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPActionPerformed
-
+        
         txtInsertarFormula.insert("P", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
         logicaSatisfacibilidad.getLetrasAgregadas().add("P");
 
     }//GEN-LAST:event_btnAgregarPActionPerformed
 
     private void btnAgregarQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarQActionPerformed
-
+        
         txtInsertarFormula.insert("Q", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
         logicaSatisfacibilidad.getLetrasAgregadas().add("Q");
 
     }//GEN-LAST:event_btnAgregarQActionPerformed
 
     private void btnAgregarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarRActionPerformed
-
+        
         txtInsertarFormula.insert("R", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
         logicaSatisfacibilidad.getLetrasAgregadas().add("R");
 
     }//GEN-LAST:event_btnAgregarRActionPerformed
 
     private void btnAgregarSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSActionPerformed
-
+        
         txtInsertarFormula.insert("S", logicaSatisfacibilidad.ubicarCursorConLetra(txtInsertarFormula));
         logicaSatisfacibilidad.getLetrasAgregadas().add("S");
 
@@ -474,14 +460,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarTActionPerformed
 
     private void btnPosicionarCursorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPosicionarCursorActionPerformed
-        logicaSatisfacibilidad.setPosicionesBoton(1);
-        txtInsertarFormula.setCaretPosition((int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
-        
+        this.posicionRetornaBoton = (int) logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula);
+        logicaSatisfacibilidad.setPosicionesBoton(logicaSatisfacibilidad.getPosicionesBoton() + 1);
     }//GEN-LAST:event_btnPosicionarCursorActionPerformed
 
     private void txtInsertarFormulaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtInsertarFormulaMouseClicked
-        // TODO add your handling code here:
-        txtInsertarFormula.setCaretPosition((int)logicaSatisfacibilidad.ubicarCursorConBoton(txtInsertarFormula));
+
     }//GEN-LAST:event_txtInsertarFormulaMouseClicked
 
     /**
@@ -544,4 +528,15 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextArea txtInsertarFormula;
     // End of variables declaration//GEN-END:variables
 
+    public void agregarOperadoresLogicos(String formula) {
+        System.out.println(this.posicionRetornaBoton);
+        if (this.posicionRetornaBoton != 0) {
+            txtInsertarFormula.insert(formula, this.posicionRetornaBoton);
+        } else {
+            txtInsertarFormula.insert(formula, logicaSatisfacibilidad.ubicarCursor(txtInsertarFormula));
+        }
+        logicaSatisfacibilidad.getLetrasAgregadas().add(formula);
+        this.posicionRetornaBoton = 0;
+    }
+    
 }

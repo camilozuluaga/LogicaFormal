@@ -12,9 +12,9 @@ import logica.satisfacibilidad.LogicaSatisfacibilidad;
  * @author PC
  */
 public class GenerarTabla extends javax.swing.JFrame {
-    
-    
+
     LogicaSatisfacibilidad logicaSatisfacibilidad;
+
     /**
      * Creates new form GenerarTabla
      */
