@@ -77,7 +77,7 @@ public class LogicaSatisfacibilidad {
         letrasAgregadas.add("");
         this.contador = 0;
         modeloTabla = new DefaultTableModel();
-        this.posicionesBoton = 0;
+        this.posicionesBoton = 1;
 
     }
 
@@ -100,8 +100,8 @@ public class LogicaSatisfacibilidad {
 
     public int ubicarCursor(JTextArea txtInsertarFormula) {
 
-        if (txtInsertarFormula.getText().contains(")")) {
-            return txtInsertarFormula.getText().indexOf(")");
+        if (txtInsertarFormula.getText().length() > 0) {
+            return ubicarCursorConLetra(txtInsertarFormula);
         }
         return 0;
     }
@@ -118,16 +118,10 @@ public class LogicaSatisfacibilidad {
         Queue<Integer> posicionesBotonCola = obtenerPosiciones(txtInsertarFormula);
         if (!posicionesBotonCola.isEmpty()) {
             Object[] posicionesArreglo = posicionesBotonCola.toArray();
-            if (sumarContador(posicionesBotonCola)) {
-
-                return (int) posicionesArreglo[this.posicionesBoton];
-            } else {
-                this.posicionesBoton = 0;
-                return this.posicionesBoton;
-            }
-
+            return (int) posicionesArreglo[sumarContador(posicionesBotonCola)];
         }
-        return 0;
+        this.posicionesBoton = 0;
+        return this.posicionesBoton;
     }
 
     /**
@@ -137,11 +131,16 @@ public class LogicaSatisfacibilidad {
      * @param posicionesBotonCola, cola donde sabemos cual es el size
      * @return el contador sumado o cero si no puede sumar mas
      */
-    public boolean sumarContador(Queue<Integer> posicionesBotonCola) {
+    public int sumarContador(Queue<Integer> posicionesBotonCola) {
+
         if (this.posicionesBoton <= posicionesBotonCola.size() - 1) {
-            return true;
+            System.out.println(this.posicionesBoton);
+            return this.posicionesBoton++;
         }
-        return false;
+        System.out.println(this.posicionesBoton);
+        this.posicionesBoton = 0;
+        return this.posicionesBoton;
+
     }
 
     /**
@@ -162,17 +161,19 @@ public class LogicaSatisfacibilidad {
             letra.add(arregloLetras[i]);
         }
         if (!letra.isEmpty()) {
+            letra.add(' ');
             char primerCaracter = letra.poll();
             char aux1 = primerCaracter;
             while (!letra.isEmpty()) {
-                if (primerCaracter == ')' && aux1 == '(') {
-                    posicionMetodo.add(posicion);
+                if (primerCaracter != ' ') {
+                    if (primerCaracter == ')' && aux1 == '(') {
+                        posicionMetodo.add(posicion);
+                    }
                 }
                 aux1 = primerCaracter;
                 primerCaracter = letra.poll();
                 posicion++;
             }
-            posicionMetodo.add(posicion);
             return posicionMetodo;
         }
         return posicionMetodo;
