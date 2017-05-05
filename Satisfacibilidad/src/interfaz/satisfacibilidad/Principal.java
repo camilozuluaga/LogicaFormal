@@ -31,6 +31,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         txtInsertarFormula.setFont(cf.MyFont(0, 26));
+        txtFormulasProposicionales.setFont(cf.MyFont(0, 26));
         this.setSize(1117, 555); 
         this.setLocationRelativeTo(this);
         logicaSatisfacibilidad = new LogicaSatisfacibilidad();
@@ -294,6 +295,7 @@ public class Principal extends javax.swing.JFrame {
 
         txtFormulasProposicionales.setColumns(20);
         txtFormulasProposicionales.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        txtFormulasProposicionales.setForeground(new java.awt.Color(30, 42, 63));
         txtFormulasProposicionales.setRows(5);
         jScrollPane2.setViewportView(txtFormulasProposicionales);
 
