@@ -5,11 +5,9 @@
  */
 package logica.satisfacibilidad;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,6 +28,7 @@ public class LogicaSatisfacibilidad {
      * ObtenerLetras proposicionales, automaticamente
      */
     Queue<Character> letra;
+
     /**
      * pila que nos sirve para guardar cuando se presiona un boton lo que se
      * hace con esto es para poder eliminar mas adelante cuando el usuario vaya
@@ -42,7 +41,14 @@ public class LogicaSatisfacibilidad {
      */
     Queue<String> agregarFormula;
 
+    Queue<Character> agregarValorPLetra;
+
+    Queue<Character> agregarLetraProposicional;
+
     DefaultTableModel modeloTabla;
+
+    int contador;
+    int posicionesBoton;
 
     public Queue<String> getAgregarFormula() {
         return agregarFormula;
@@ -59,8 +65,6 @@ public class LogicaSatisfacibilidad {
     public void setLetrasAgregadas(Stack<String> letrasAgregadas) {
         this.letrasAgregadas = letrasAgregadas;
     }
-    int contador;
-    int posicionesBoton;
 
     public int getPosicionesBoton() {
         return posicionesBoton;
@@ -79,7 +83,8 @@ public class LogicaSatisfacibilidad {
         this.contador = 0;
         modeloTabla = new DefaultTableModel();
         this.posicionesBoton = 1;
-
+        agregarValorPLetra = new LinkedList<>();
+        agregarLetraProposicional = new LinkedList<>();
     }
 
     /**
@@ -185,43 +190,68 @@ public class LogicaSatisfacibilidad {
      */
     public Queue<Character> ObtenerLetras() {
         Queue<Character> letras = new LinkedList<>();
-        letras.add(' ');
         while (!this.agregarFormula.isEmpty()) {
             char[] formulas = this.agregarFormula.poll().toCharArray();
             for (int i = 0; i < formulas.length; i++) {
                 if ((formulas[i] == 'P') || (formulas[i] == 'Q')
                         || (formulas[i] == 'R') || (formulas[i] == 'S')
                         || (formulas[i] == 'T')) {
-                    if (letras.peek() != formulas[i]) {
+                    if (!letras.contains(formulas[i])) {
                         letras.add(formulas[i]);
+                        agregarLetraProposicional.add(formulas[i]);
                     }
-
                 }
+                //obtenerSimbolo(formulas[i]);
             }
         }
         return letras;
     }
 
     /**
+     * metodo que nos permite saber cual es el simbolo que se ingreso en las
+     * formulas
+     *
+     * @param inicial, el caracter para saber cual es el simbolo
+     */
+    /* 
+public void obtenerSimbolo(char inicial) {
+        switch (inicial) {
+            case '~':
+                this.signosFormulas.add("~");
+                break;
+            case '-':
+                this.signosFormulas.add("->");
+                break;
+            case '<':
+                this.signosFormulas.add("<->");
+                break;
+            case '^':
+                this.signosFormulas.add("^");
+                break;
+            case 'v':
+                this.signosFormulas.add("v");
+                break;
+            default:
+                break;
+        }
+    }*/
+    /**
      * metodo que nos permite generar la forma de la tabla, de acuerdo al numero
      * de letras que tiene la formula
      */
-    public void ponerTabla(JTable tabla) {
-
+    public void ponerTabla() {
         Queue<Character> letras = ObtenerLetras();
-        double a = Math.pow(2, letras.size() - 1);
-        letras.poll();
+        double a = Math.pow(2, letras.size());
         this.contador = 1;
         while (!letras.isEmpty()) {
-            modeloTabla.addRow(new Object[]{letras.poll()});
+            char clave = letras.poll();
             a = a / 2;
-            for (int i = 0; i < contador; i++) {
+            for (int i = 0; i < this.contador; i++) {
                 ponerUnos(a);
                 ponerCeros(a);
             }
-            contador++;
+            this.contador++;
         }
-        tabla.setModel(modeloTabla);
     }
 
     /**
@@ -234,8 +264,7 @@ public class LogicaSatisfacibilidad {
             System.out.print("");
         } else {
             ponerUnos(veces - 1);
-            modeloTabla.addColumn("1");
-            System.out.println(1);
+            agregarValorPLetra.add('1');
         }
     }
 
@@ -249,20 +278,26 @@ public class LogicaSatisfacibilidad {
             System.out.print("");
         } else {
             ponerCeros(veces - 1);
-            modeloTabla.addColumn("0");
-            System.out.println(0);
+            agregarValorPLetra.add('0');
         }
     }
 
-    public void obtenerFormulas() {
-        String arregloFormulas[] = getAgregarFormula().toString().split(",");
-        for (int i = 0; i < arregloFormulas.length; i++) {
-            System.out.println(arregloFormulas[i]);
+    public void imprimirMapa() {
+        ponerTabla();
+        double hasta = Math.pow(2, agregarLetraProposicional.size());
+        int posi = 0;
+        while (!agregarLetraProposicional.isEmpty()) {
+            System.out.print(agregarLetraProposicional.poll() + " ");
+            while (posi < hasta) {
+                if (!agregarValorPLetra.isEmpty()) {
+                    System.out.print(agregarValorPLetra.poll());
+                }
+                posi++;
+            }
+            System.out.println("");
+            posi = 0;
         }
-        ArrayList<String> formulas = new ArrayList<>();
-        for (int i = 0; i < arregloFormulas.length; i++) {
-            formulas.add(arregloFormulas[i]);
-        }
+
     }
 
 }

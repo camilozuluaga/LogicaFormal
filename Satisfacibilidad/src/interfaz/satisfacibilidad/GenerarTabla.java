@@ -21,7 +21,7 @@ public class GenerarTabla extends javax.swing.JFrame {
     public GenerarTabla() {
         initComponents();
         logicaSatisfacibilidad = new LogicaSatisfacibilidad();
-        logicaSatisfacibilidad.ponerTabla(jTablaDatos);
+        //logicaSatisfacibilidad.ponerTabla(jTablaDatos);
     }
 
     /**

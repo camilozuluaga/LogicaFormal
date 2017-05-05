@@ -12,45 +12,37 @@ import java.util.ArrayList;
  * @author BRAYHAN JARAMILLO
  */
 public class Ejemplo {
-    
+
     public static void main(String[] args) {
+
+        char[][] a = new char[100][100];
         
-        
-        
-        
-        
-        
-        
-        
-        
+
     }
-    
-    
-        public static void obtenerFormulas() {
+
+    public static void obtenerFormulas() {
 
         ArrayList<String> formulas = new ArrayList<>();
         formulas.add("((P)->(Q))^(P)");
         formulas.add("(P)<->(Q)");
         formulas.add("~((P)v(Q))");
-        
-        String primera= "((P)->(Q))^(P)";
-        
-        
-            for (int i = 0; i < primera.length(); i++) {
-                
-            }
+
+        String primera = "((P)->(Q))^(P)";
+
+        for (int i = 0; i < primera.length(); i++) {
+
+        }
 
     }
-        
-        
-        public static ArrayList<String> retornar(String formula){
-             ArrayList<String> formulaConjunto= new ArrayList<>();
-             
-             for (int i = 0; i < formula.length(); i++) {
-                
-            }
-             
-             return formulaConjunto;
+
+    public static ArrayList<String> retornar(String formula) {
+        ArrayList<String> formulaConjunto = new ArrayList<>();
+
+        for (int i = 0; i < formula.length(); i++) {
+
         }
-   
+
+        return formulaConjunto;
+    }
+
 }

@@ -36,7 +36,7 @@ public class Principal extends javax.swing.JFrame {
         txtInsertarFormula.requestFocus();
         setLocationRelativeTo(this);
         this.setResizable(false);
-        txtInsertarFormula.setEditable(false);
+        //txtInsertarFormula.setEditable(false);
         txtFormulasProposicionales.setEditable(false);
         lblPosicionCursor.setVisible(false);
         lblPosicion.setVisible(false);
@@ -391,12 +391,6 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnGenerarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTablaActionPerformed
 
-        if (logicaSatisfacibilidad.getAgregarFormula().size() >= 1) {
-            System.out.println("algo");
-            generar = new GenerarTabla();
-            this.setVisible(false);
-            generar.setVisible(true);
-        }
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
 
     private void btnAgregarNegacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarNegacionActionPerformed
@@ -470,6 +464,7 @@ public class Principal extends javax.swing.JFrame {
             txtFormulasProposicionales.append(txtInsertarFormula.getText());
             txtFormulasProposicionales.append("\n");
             txtInsertarFormula.setText("");
+            logicaSatisfacibilidad.imprimirMapa();
         }
     }//GEN-LAST:event_btnAgregarFormulaActionPerformed
 
@@ -490,7 +485,7 @@ public class Principal extends javax.swing.JFrame {
         lblPosicionCursor.setVisible(true);
         lblPosicion.setVisible(true);
         lblPosicion.setText(String.valueOf(this.logicaSatisfacibilidad.getPosicionesBoton()));
-        
+
     }//GEN-LAST:event_btnPosicionarCursorActionPerformed
 
     private void txtInsertarFormulaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtInsertarFormulaMouseClicked
