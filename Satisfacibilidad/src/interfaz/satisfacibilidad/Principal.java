@@ -6,6 +6,7 @@
 package interfaz.satisfacibilidad;
 
 import java.awt.Robot;
+import logica.satisfacibilidad.CustomFont;
 import logica.satisfacibilidad.LogicaSatisfacibilidad;
 
 /**
@@ -21,11 +22,15 @@ public class Principal extends javax.swing.JFrame {
     LogicaSatisfacibilidad logicaSatisfacibilidad;
     GenerarTabla generar;
     int posicionRetornaBoton = 0;
+    CustomFont cf = new CustomFont();
 
     public Principal() {
         initComponents();
+
+        txtInsertarFormula.setFont(cf.MyFont(0, 26));
+        txtFormulasProposicionales.setFont(cf.MyFont(0, 26));
         this.setSize(1117, 555);
-        setLocationRelativeTo(this);
+        this.setLocationRelativeTo(this);
         logicaSatisfacibilidad = new LogicaSatisfacibilidad();
         txtInsertarFormula.requestFocus();
         this.setResizable(false);
@@ -71,7 +76,6 @@ public class Principal extends javax.swing.JFrame {
         lblPosicion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1108, 525));
         getContentPane().setLayout(null);
 
         jcMousePanel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/recursos.imagenes/fondoprincipal.png"))); // NOI18N
@@ -257,6 +261,7 @@ public class Principal extends javax.swing.JFrame {
 
         txtInsertarFormula.setColumns(20);
         txtInsertarFormula.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        txtInsertarFormula.setForeground(new java.awt.Color(30, 42, 63));
         txtInsertarFormula.setRows(5);
         txtInsertarFormula.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -281,6 +286,7 @@ public class Principal extends javax.swing.JFrame {
 
         txtFormulasProposicionales.setColumns(20);
         txtFormulasProposicionales.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        txtFormulasProposicionales.setForeground(new java.awt.Color(30, 42, 63));
         txtFormulasProposicionales.setRows(5);
         jScrollPane2.setViewportView(txtFormulasProposicionales);
 
@@ -333,9 +339,11 @@ public class Principal extends javax.swing.JFrame {
                                     .addGroup(jcMousePanel1Layout.createSequentialGroup()
                                         .addComponent(btnGenerarTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                                        .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(jcMousePanel1Layout.createSequentialGroup()
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
                                 .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
                                     .addComponent(btnPosicionarCursor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -355,20 +363,20 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(lblPosicionCursor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblPosicion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAgregarFormula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAgregarFormula)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jcMousePanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnGenerarTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addGroup(jcMousePanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addGap(0, 0, 0)
                         .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPosicionarCursor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnPosicionarCursor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jcMousePanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGenerarTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jcMousePanel1Layout.createSequentialGroup()
@@ -376,7 +384,7 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         getContentPane().add(jcMousePanel1);
@@ -460,7 +468,7 @@ public class Principal extends javax.swing.JFrame {
             txtFormulasProposicionales.append(txtInsertarFormula.getText());
             txtFormulasProposicionales.append("\n");
             txtInsertarFormula.setText("");
-            logicaSatisfacibilidad.imprimirMapa();
+            //logicaSatisfacibilidad.resultadoSimboloV();
         }
     }//GEN-LAST:event_btnAgregarFormulaActionPerformed
 

@@ -5,11 +5,14 @@
  */
 package logica.satisfacibilidad;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
+import static jdk.nashorn.internal.objects.NativeArray.map;
 
 /**
  *
@@ -17,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class LogicaSatisfacibilidad {
 
-    LetraYValor letraYvalor;
+    LetraYValor letraYvalor = new LetraYValor();
 
     /**
      * cola en la que guardamos las posiciones donde haya un (), para saber
@@ -90,7 +93,7 @@ public class LogicaSatisfacibilidad {
         agregarValorPLetra = new LinkedList<>();
         agregarLetraProposicional = new LinkedList<>();
         ordenSimbolo = new Stack<>();
-        letraYvalor = new LetraYValor();
+
     }
 
     /**
@@ -294,7 +297,7 @@ public class LogicaSatisfacibilidad {
      * metodo que nos permite generar la forma de la tabla, de acuerdo al numero
      * de letras que tiene la formula
      */
-    public void ponerTabla() {
+    public void GenerarNumerosPorLetra() {
         Queue<Character> letras = ObtenerLetras();
         double a = Math.pow(2, letras.size());
         this.contador = 1;
@@ -337,21 +340,134 @@ public class LogicaSatisfacibilidad {
         }
     }
 
-    public void imprimirMapa() {
-        ponerTabla();
+    /**
+     * metodo que nos permite asociar los numeros generados, a cada letra. con
+     * esto cuando tengamos una letra sabremos cuales son los valores asociados
+     */
+    public void asociarNumerosALetra() {
+        GenerarNumerosPorLetra();
+        double hasta = Math.pow(2, agregarLetraProposicional.size());
+        int posi = 0;
+        while (!agregarLetraProposicional.isEmpty()) {
+            char letraA = agregarLetraProposicional.poll();
+            letraYvalor.getValor().put(letraA, new ArrayList());
+            ArrayList<Character> datos = new ArrayList<>();
+            while (posi < hasta) {
+                if (!agregarValorPLetra.isEmpty()) {
+                    datos.add(agregarValorPLetra.poll());
+                }
+                posi++;
+            }
+            letraYvalor.getValor().replace(letraA, datos);
+            posi = 0;
+        }
 
-        /**
-         * double hasta = Math.pow(2, agregarLetraProposicional.size()); int
-         * posi = 0; while (!agregarLetraProposicional.isEmpty()) {
-         * System.out.print(agregarLetraProposicional.poll() + " "); while (posi
-         * < hasta) { if (!agregarValorPLetra.isEmpty()) {
-         * System.out.print(agregarValorPLetra.poll()); } posi++; }
-         * System.out.println(""); posi = 0; }
-         *
-         */
     }
 
-    public void resultadoSimboloV(String simbolo) {
-
+    /**
+     * metodo que nos permite devolver el valor del simbolo O
+     *
+     * @param letraUno, la letra para obtener los vlores
+     * @param letraDos, la letra para obtener los valores
+     * @return el arreglo con los valores ya procesados
+     */
+    public ArrayList<Character> resultadoSimboloO(char letraUno, char letraDos) {
+        asociarNumerosALetra();
+        ArrayList<Character> retorno = new ArrayList<>();
+        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        ArrayList<Character> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+        for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
+            if (valoresPrimeraLetra.get(i).equals('0') && valoresSegundaLetra.get(i).equals('0')) {
+                retorno.add('0');
+                continue;
+            }
+            retorno.add('1');
+        }
+        return retorno;
     }
+
+    /**
+     * metodo que nos permite devolver el valor del simbolo y
+     *
+     * @param letraUno, la letra para obtener los vlores
+     * @param letraDos, la letra para obtener los valores
+     * @return el arreglo con los valores ya procesados
+     */
+    public ArrayList<Character> resultadoSimboloY(char letraUno, char letraDos) {
+        asociarNumerosALetra();
+        ArrayList<Character> retorno = new ArrayList<>();
+        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        ArrayList<Character> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+        for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
+            if (valoresPrimeraLetra.get(i).equals('1') && valoresSegundaLetra.get(i).equals('1')) {
+                retorno.add('1');
+                continue;
+            }
+            retorno.add('0');
+        }
+        return retorno;
+    }
+
+    /**
+     * metodo que nos permite devolver el valor del simbolo entonces
+     *
+     * @param letraUno, la letra para obtener los vlores
+     * @param letraDos, la letra para obtener los valores
+     * @return el arreglo con los valores ya procesados
+     */
+    public ArrayList<Character> resultadoSimboloEntonces(char letraUno, char letraDos) {
+        asociarNumerosALetra();
+        ArrayList<Character> retorno = new ArrayList<>();
+        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        ArrayList<Character> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+        for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
+            if (valoresPrimeraLetra.get(i).equals('1') && valoresSegundaLetra.get(i).equals('0')) {
+                retorno.add('0');
+                continue;
+            }
+            retorno.add('1');
+        }
+        return retorno;
+    }
+
+    /**
+     * metodo que nos permite devolver el valor de la doble implicacion
+     *
+     * @param letraUno, para obtener el valor de las letras
+     * @param letraDos, para obtener el valor de la segunda letra
+     * @return el arreglo con los valores de acuerdo a la doble implicacion
+     */
+    public ArrayList<Character> resultadoSimboloDobleImplicacion(char letraUno, char letraDos) {
+        asociarNumerosALetra();
+        ArrayList<Character> retorno = new ArrayList<>();
+        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        ArrayList<Character> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+        for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
+            if ((valoresPrimeraLetra.get(i).equals('1') && valoresSegundaLetra.get(i).equals('1'))
+                    || (valoresPrimeraLetra.get(i).equals('0') && valoresSegundaLetra.get(i).equals('0'))) {
+                retorno.add('1');
+                continue;
+            }
+            retorno.add('0');
+        }
+        return retorno;
+    }
+
+    /**
+     * metodo que nos devuelve un arreglo con los valores que corresponden, a la
+     * negacion.
+     *
+     * @param letraUno, letra para saber cuales son los valores
+     * @return el arreglo con los valores que tiene la letra negados
+     */
+    public ArrayList<Character> resultadoSimboloNegacion(char letraUno) {
+        asociarNumerosALetra();
+        ArrayList<Character> retorno = new ArrayList<>();
+        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        for (int i = valoresPrimeraLetra.size(); i <= 0; i--) {
+            retorno.add(valoresPrimeraLetra.get(i));
+        }
+        return retorno;
+    }
+
 }

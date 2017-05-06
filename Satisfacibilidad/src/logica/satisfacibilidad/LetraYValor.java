@@ -15,26 +15,17 @@ import java.util.Map;
  */
 public class LetraYValor {
 
-    private String letra;
-    private Map<String, String[]> valor;
+    private Map<Character, ArrayList> valor;
 
     public LetraYValor() {
         valor = new HashMap<>();
     }
 
-    public String getLetra() {
-        return letra;
-    }
-
-    public void setLetra(String letra) {
-        this.letra = letra;
-    }
-
-    public Map<String, String[]> getValor() {
+    public Map<Character, ArrayList> getValor() {
         return valor;
     }
 
-    public void setValor(Map<String, String[]> valor) {
+    public void setValor(Map<Character, ArrayList> valor) {
         this.valor = valor;
     }
 
