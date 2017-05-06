@@ -5,11 +5,7 @@
  */
 package interfaz.satisfacibilidad;
 
-import java.awt.AWTException;
-import java.awt.Dimension;
 import java.awt.Robot;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import logica.satisfacibilidad.LogicaSatisfacibilidad;
 
 /**
@@ -28,16 +24,10 @@ public class Principal extends javax.swing.JFrame {
 
     public Principal() {
         initComponents();
-        this.setSize(1117, 555); 
-        this.setLocationRelativeTo(this);
-        logicaSatisfacibilidad = new LogicaSatisfacibilidad();
-        try {
-            robot = new Robot();
-        } catch (AWTException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        txtInsertarFormula.requestFocus();
+        this.setSize(1117, 555);
         setLocationRelativeTo(this);
+        logicaSatisfacibilidad = new LogicaSatisfacibilidad();
+        txtInsertarFormula.requestFocus();
         this.setResizable(false);
         //txtInsertarFormula.setEditable(false);
         txtFormulasProposicionales.setEditable(false);

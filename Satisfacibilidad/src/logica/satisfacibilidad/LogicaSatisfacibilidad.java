@@ -17,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class LogicaSatisfacibilidad {
 
+    LetraYValor letraYvalor;
+
     /**
      * cola en la que guardamos las posiciones donde haya un (), para saber
      * donde puedo ubicar la proxima letra proposicional
@@ -46,6 +48,8 @@ public class LogicaSatisfacibilidad {
     Queue<Character> agregarLetraProposicional;
 
     DefaultTableModel modeloTabla;
+
+    Stack<String> ordenSimbolo;
 
     int contador;
     int posicionesBoton;
@@ -85,6 +89,8 @@ public class LogicaSatisfacibilidad {
         this.posicionesBoton = 1;
         agregarValorPLetra = new LinkedList<>();
         agregarLetraProposicional = new LinkedList<>();
+        ordenSimbolo = new Stack<>();
+        letraYvalor = new LetraYValor();
     }
 
     /**
@@ -190,8 +196,10 @@ public class LogicaSatisfacibilidad {
      */
     public Queue<Character> ObtenerLetras() {
         Queue<Character> letras = new LinkedList<>();
+        int contadorParentesis = 0;
         while (!this.agregarFormula.isEmpty()) {
-            char[] formulas = this.agregarFormula.poll().toCharArray();
+            String formula = this.agregarFormula.poll();
+            char[] formulas = formula.toCharArray();
             for (int i = 0; i < formulas.length; i++) {
                 if ((formulas[i] == 'P') || (formulas[i] == 'Q')
                         || (formulas[i] == 'R') || (formulas[i] == 'S')
@@ -201,10 +209,60 @@ public class LogicaSatisfacibilidad {
                         agregarLetraProposicional.add(formulas[i]);
                     }
                 }
-                //obtenerSimbolo(formulas[i]);
+                if (formulas[i] == '(') {
+                    ++contadorParentesis;
+                }
+                if (formulas[i] == ')') {
+                    --contadorParentesis;
+                }
+                if (contadorParentesis == 0) {
+                    ordenSimbolo.add(obtenerSimbolo(formulas[i + 1]));
+                    obtenerSimbolos(formula, obtenerSimbolo(formulas[i + 1]));
+                    contadorParentesis = 1;
+                }
             }
         }
         return letras;
+    }
+
+    public void obtenerSimbolos(String formula, String simboloPrincipal) {
+        ordenSimbolo.pop();
+        String restoFormula = formula.split(simboloPrincipal, 0)[0];
+        String finalFormula = formula.substring(formula.lastIndexOf(simboloPrincipal) + simboloPrincipal.length(), formula.length());
+        llenarPilaOrdenFormula(finalFormula);
+        ordenSimbolo.add(simboloPrincipal);
+        llenarPilaOrdenFormula(restoFormula);
+
+    }
+
+    /**
+     * metodo que nos permite cargar una pila, con la formula de manera que en]
+     * la parte de abajo de la pila quede los simbolos y letras proposicionales
+     * a que estan a la derecha del simbolo principal, y en la parte de arriba
+     * lo que esta a la izquierda del simbolo principal
+     *
+     * @param finalFormula, la cadena, puede ser la parte de la izquierda del
+     * operador principal o tambien la parte mas a la derecha
+     */
+    public void llenarPilaOrdenFormula(String finalFormula) {
+        int contadorSimbolo = 0;
+        for (int i = 0; i < finalFormula.length(); i++) {
+            if (finalFormula.charAt(i) != ')' && finalFormula.charAt(i) != '(') {
+                if ((finalFormula.charAt(i) == 'P') || (finalFormula.charAt(i) == 'Q')
+                        || (finalFormula.charAt(i) == 'R') || (finalFormula.charAt(i) == 'S')
+                        || (finalFormula.charAt(i) == 'T')) {
+                    ordenSimbolo.add(String.valueOf(finalFormula.charAt(i)));
+                    contadorSimbolo = 0;
+                } else if (obtenerSimbolo(finalFormula.charAt(i)).length() > 0) {
+                    if (contadorSimbolo == 0) {
+                        ordenSimbolo.add(obtenerSimbolo(finalFormula.charAt(i)));
+                        contadorSimbolo++;
+                    }
+                }
+            } else {
+                contadorSimbolo = 0;
+            }
+        }
     }
 
     /**
@@ -212,29 +270,26 @@ public class LogicaSatisfacibilidad {
      * formulas
      *
      * @param inicial, el caracter para saber cual es el simbolo
+     * @return el simbolo que representa de acuerdo al primer caracter que se
+     * analiza para leer
      */
-    /* 
-public void obtenerSimbolo(char inicial) {
+    public String obtenerSimbolo(char inicial) {
         switch (inicial) {
             case '~':
-                this.signosFormulas.add("~");
-                break;
+                return "~";
             case '-':
-                this.signosFormulas.add("->");
-                break;
+                return "->";
             case '<':
-                this.signosFormulas.add("<->");
-                break;
+                return "<->";
             case '^':
-                this.signosFormulas.add("^");
-                break;
+                return "^";
             case 'v':
-                this.signosFormulas.add("v");
-                break;
+                return "v";
             default:
-                break;
+                return "";
         }
-    }*/
+    }
+
     /**
      * metodo que nos permite generar la forma de la tabla, de acuerdo al numero
      * de letras que tiene la formula
@@ -284,20 +339,19 @@ public void obtenerSimbolo(char inicial) {
 
     public void imprimirMapa() {
         ponerTabla();
-        double hasta = Math.pow(2, agregarLetraProposicional.size());
-        int posi = 0;
-        while (!agregarLetraProposicional.isEmpty()) {
-            System.out.print(agregarLetraProposicional.poll() + " ");
-            while (posi < hasta) {
-                if (!agregarValorPLetra.isEmpty()) {
-                    System.out.print(agregarValorPLetra.poll());
-                }
-                posi++;
-            }
-            System.out.println("");
-            posi = 0;
-        }
 
+        /**
+         * double hasta = Math.pow(2, agregarLetraProposicional.size()); int
+         * posi = 0; while (!agregarLetraProposicional.isEmpty()) {
+         * System.out.print(agregarLetraProposicional.poll() + " "); while (posi
+         * < hasta) { if (!agregarValorPLetra.isEmpty()) {
+         * System.out.print(agregarValorPLetra.poll()); } posi++; }
+         * System.out.println(""); posi = 0; }
+         *
+         */
     }
 
+    public void resultadoSimboloV(String simbolo) {
+
+    }
 }
