@@ -468,7 +468,7 @@ public class Principal extends javax.swing.JFrame {
             txtFormulasProposicionales.append(txtInsertarFormula.getText());
             txtFormulasProposicionales.append("\n");
             txtInsertarFormula.setText("");
-            //logicaSatisfacibilidad.resultadoSimboloV();
+            logicaSatisfacibilidad.evaluarFormula();
         }
     }//GEN-LAST:event_btnAgregarFormulaActionPerformed
 

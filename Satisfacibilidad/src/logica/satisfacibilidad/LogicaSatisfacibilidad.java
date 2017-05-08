@@ -6,13 +6,11 @@
 package logica.satisfacibilidad;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
-import static jdk.nashorn.internal.objects.NativeArray.map;
 
 /**
  *
@@ -46,7 +44,7 @@ public class LogicaSatisfacibilidad {
      */
     Queue<String> agregarFormula;
 
-    Queue<Character> agregarValorPLetra;
+    Queue<String> agregarValorPLetra;
 
     Queue<Character> agregarLetraProposicional;
 
@@ -293,6 +291,23 @@ public class LogicaSatisfacibilidad {
         }
     }
 
+    public boolean obtenerSimboloBooleano(String inicial) {
+        switch (inicial) {
+            case "~":
+                return false;
+            case "-":
+                return true;
+            case "<":
+                return true;
+            case "^":
+                return true;
+            case "v":
+                return true;
+            default:
+                return false;
+        }
+    }
+
     /**
      * metodo que nos permite generar la forma de la tabla, de acuerdo al numero
      * de letras que tiene la formula
@@ -322,7 +337,7 @@ public class LogicaSatisfacibilidad {
             System.out.print("");
         } else {
             ponerUnos(veces - 1);
-            agregarValorPLetra.add('1');
+            agregarValorPLetra.add("1");
         }
     }
 
@@ -336,7 +351,7 @@ public class LogicaSatisfacibilidad {
             System.out.print("");
         } else {
             ponerCeros(veces - 1);
-            agregarValorPLetra.add('0');
+            agregarValorPLetra.add("0");
         }
     }
 
@@ -349,9 +364,9 @@ public class LogicaSatisfacibilidad {
         double hasta = Math.pow(2, agregarLetraProposicional.size());
         int posi = 0;
         while (!agregarLetraProposicional.isEmpty()) {
-            char letraA = agregarLetraProposicional.poll();
+            String letraA = String.valueOf(agregarLetraProposicional.poll());
             letraYvalor.getValor().put(letraA, new ArrayList());
-            ArrayList<Character> datos = new ArrayList<>();
+            ArrayList<String> datos = new ArrayList<>();
             while (posi < hasta) {
                 if (!agregarValorPLetra.isEmpty()) {
                     datos.add(agregarValorPLetra.poll());
@@ -369,19 +384,30 @@ public class LogicaSatisfacibilidad {
      *
      * @param letraUno, la letra para obtener los vlores
      * @param letraDos, la letra para obtener los valores
+     * @param negacion
      * @return el arreglo con los valores ya procesados
      */
-    public ArrayList<Character> resultadoSimboloO(char letraUno, char letraDos) {
-        asociarNumerosALetra();
-        ArrayList<Character> retorno = new ArrayList<>();
-        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
-        ArrayList<Character> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+    public ArrayList<String> resultadoSimboloO(String letraUno, String letraDos, String negacion) {
+        ArrayList<String> retorno = new ArrayList<>();
+        ArrayList<String> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        ArrayList<String> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+        if (saberNegacion(letraUno, negacion)) {
+            valoresPrimeraLetra = letraYvalor.getValor().get(negacion);
+        }
+
+        if (saberNegacion(letraDos, negacion)) {
+            valoresSegundaLetra = letraYvalor.getValor().get(negacion);
+        }
+
+        System.out.println(valoresSegundaLetra);
+
         for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
-            if (valoresPrimeraLetra.get(i).equals('0') && valoresSegundaLetra.get(i).equals('0')) {
-                retorno.add('0');
+
+            if (valoresPrimeraLetra.get(i).equals("0") && valoresSegundaLetra.get(i).equals("0")) {
+                retorno.add("0");
                 continue;
             }
-            retorno.add('1');
+            retorno.add("1");
         }
         return retorno;
     }
@@ -391,19 +417,26 @@ public class LogicaSatisfacibilidad {
      *
      * @param letraUno, la letra para obtener los vlores
      * @param letraDos, la letra para obtener los valores
+     * @param negacion
      * @return el arreglo con los valores ya procesados
      */
-    public ArrayList<Character> resultadoSimboloY(char letraUno, char letraDos) {
-        asociarNumerosALetra();
-        ArrayList<Character> retorno = new ArrayList<>();
-        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
-        ArrayList<Character> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+    public ArrayList<String> resultadoSimboloY(String letraUno, String letraDos, String negacion) {
+        ArrayList<String> retorno = new ArrayList<>();
+        ArrayList<String> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        ArrayList<String> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+        if (saberNegacion(letraUno, negacion)) {
+            valoresPrimeraLetra = letraYvalor.getValor().get(negacion);
+        }
+
+        if (saberNegacion(letraDos, negacion)) {
+            valoresSegundaLetra = letraYvalor.getValor().get(negacion);
+        }
         for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
-            if (valoresPrimeraLetra.get(i).equals('1') && valoresSegundaLetra.get(i).equals('1')) {
-                retorno.add('1');
+            if (valoresPrimeraLetra.get(i).equals("1") && valoresSegundaLetra.get(i).equals("1")) {
+                retorno.add("1");
                 continue;
             }
-            retorno.add('0');
+            retorno.add("0");
         }
         return retorno;
     }
@@ -413,19 +446,26 @@ public class LogicaSatisfacibilidad {
      *
      * @param letraUno, la letra para obtener los vlores
      * @param letraDos, la letra para obtener los valores
+     * @param negacion
      * @return el arreglo con los valores ya procesados
      */
-    public ArrayList<Character> resultadoSimboloEntonces(char letraUno, char letraDos) {
-        asociarNumerosALetra();
-        ArrayList<Character> retorno = new ArrayList<>();
-        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
-        ArrayList<Character> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+    public ArrayList<String> resultadoSimboloEntonces(String letraUno, String letraDos, String negacion) {
+        ArrayList<String> retorno = new ArrayList<>();
+        ArrayList<String> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        ArrayList<String> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+        if (saberNegacion(letraUno, negacion)) {
+            valoresPrimeraLetra = letraYvalor.getValor().get(negacion);
+        }
+
+        if (saberNegacion(letraDos, negacion)) {
+            valoresSegundaLetra = letraYvalor.getValor().get(negacion);
+        }
         for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
-            if (valoresPrimeraLetra.get(i).equals('1') && valoresSegundaLetra.get(i).equals('0')) {
-                retorno.add('0');
+            if (valoresPrimeraLetra.get(i).equals("1") && valoresSegundaLetra.get(i).equals("0")) {
+                retorno.add("0");
                 continue;
             }
-            retorno.add('1');
+            retorno.add("1");
         }
         return retorno;
     }
@@ -435,20 +475,28 @@ public class LogicaSatisfacibilidad {
      *
      * @param letraUno, para obtener el valor de las letras
      * @param letraDos, para obtener el valor de la segunda letra
+     * @param negacion
      * @return el arreglo con los valores de acuerdo a la doble implicacion
      */
-    public ArrayList<Character> resultadoSimboloDobleImplicacion(char letraUno, char letraDos) {
-        asociarNumerosALetra();
-        ArrayList<Character> retorno = new ArrayList<>();
-        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
-        ArrayList<Character> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+    public ArrayList<String> resultadoSimboloDobleImplicacion(String letraUno, String letraDos, String negacion) {
+        ArrayList<String> retorno = new ArrayList<>();
+        ArrayList<String> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        ArrayList<String> valoresSegundaLetra = letraYvalor.getValor().get(letraDos);
+        if (saberNegacion(letraUno, negacion)) {
+            valoresPrimeraLetra = letraYvalor.getValor().get(negacion);
+        }
+
+        if (saberNegacion(letraDos, negacion)) {
+            valoresSegundaLetra = letraYvalor.getValor().get(negacion);
+        }
+
         for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
-            if ((valoresPrimeraLetra.get(i).equals('1') && valoresSegundaLetra.get(i).equals('1'))
-                    || (valoresPrimeraLetra.get(i).equals('0') && valoresSegundaLetra.get(i).equals('0'))) {
-                retorno.add('1');
+            if ((valoresPrimeraLetra.get(i).equals("1") && valoresSegundaLetra.get(i).equals("1"))
+                    || (valoresPrimeraLetra.get(i).equals("0") && valoresSegundaLetra.get(i).equals("0"))) {
+                retorno.add("1");
                 continue;
             }
-            retorno.add('0');
+            retorno.add("0");
         }
         return retorno;
     }
@@ -460,14 +508,75 @@ public class LogicaSatisfacibilidad {
      * @param letraUno, letra para saber cuales son los valores
      * @return el arreglo con los valores que tiene la letra negados
      */
-    public ArrayList<Character> resultadoSimboloNegacion(char letraUno) {
-        asociarNumerosALetra();
-        ArrayList<Character> retorno = new ArrayList<>();
-        ArrayList<Character> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
-        for (int i = valoresPrimeraLetra.size(); i <= 0; i--) {
+    public ArrayList<String> resultadoSimboloNegacion(String letraUno) {
+        ArrayList<String> retorno = new ArrayList<>();
+        ArrayList<String> valoresPrimeraLetra = letraYvalor.getValor().get(letraUno);
+        for (int i = valoresPrimeraLetra.size() - 1; i >= 0; i--) {
             retorno.add(valoresPrimeraLetra.get(i));
         }
         return retorno;
+    }
+
+    public void evaluarFormula() {
+        asociarNumerosALetra();
+
+        String cabeza = ordenSimbolo.pop();
+        String aux = cabeza;
+        String aux2 = "";
+        String negacion = "";
+        while (!ordenSimbolo.isEmpty()) {
+            if (!cabeza.equals(aux)) {
+
+                if (cabeza.equals("~")) {
+                    negacion = cabeza + aux;
+                    letraYvalor.getValor().put(negacion, resultadoSimboloNegacion(aux));
+                }
+
+                if (obtenerSimboloBooleano(cabeza)) {
+                    if (negacion.length() > 0) {
+                        aux2 = negacion.substring(1);
+                    } else {
+                        aux2 = aux;
+                    }
+                }
+                
+                if (!obtenerSimboloBooleano(cabeza) && obtenerSimboloBooleano(aux)) {
+                    letraYvalor.getResultadoEvaluacion().addAll(llamarMetodo(aux, cabeza, aux2, negacion));
+                }
+
+                if (!letraYvalor.getResultadoEvaluacion().isEmpty()) {
+                    negacion = "";
+                }
+
+            }
+
+            aux = cabeza;
+            cabeza = ordenSimbolo.pop();
+
+        }
+
+    }
+
+    public ArrayList<String> llamarMetodo(String inicial, String letraUno, String letraDos, String negacion) {
+        switch (inicial) {
+            case "->":
+                return resultadoSimboloEntonces(letraUno, letraDos, negacion);
+            case "<":
+                return resultadoSimboloDobleImplicacion(letraUno, letraDos, negacion);
+            case "^":
+                return resultadoSimboloY(letraUno, letraDos, negacion);
+            case "v":
+                return resultadoSimboloO(letraUno, letraDos, negacion);
+            default:
+                return new ArrayList<>();
+        }
+    }
+
+    public boolean saberNegacion(String letra, String negacion) {
+        if (negacion.length() > 0) {
+            return negacion.substring(1).equals(letra);
+        }
+        return false;
     }
 
 }

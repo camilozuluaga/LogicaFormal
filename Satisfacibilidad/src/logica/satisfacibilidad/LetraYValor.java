@@ -15,17 +15,27 @@ import java.util.Map;
  */
 public class LetraYValor {
 
-    private Map<Character, ArrayList> valor;
+    private Map<String, ArrayList> valor;
+    private ArrayList<String> resultadoEvaluacion;
 
     public LetraYValor() {
         valor = new HashMap<>();
+        resultadoEvaluacion = new ArrayList<>();
     }
 
-    public Map<Character, ArrayList> getValor() {
+    public ArrayList<String> getResultadoEvaluacion() {
+        return resultadoEvaluacion;
+    }
+
+    public void setResultadoEvaluacion(ArrayList<String> resultadoEvaluacion) {
+        this.resultadoEvaluacion = resultadoEvaluacion;
+    }
+
+    public Map<String, ArrayList> getValor() {
         return valor;
     }
 
-    public void setValor(Map<Character, ArrayList> valor) {
+    public void setValor(Map<String, ArrayList> valor) {
         this.valor = valor;
     }
 
