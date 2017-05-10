@@ -17,10 +17,38 @@ public class LetraYValor {
 
     private Map<String, ArrayList> valor;
     private ArrayList<String> resultadoEvaluacion;
+    private ArrayList<ArrayList<String>> resultadoEvaluacionFomulas;
+    private ArrayList<String> parteFinalEvaluada;
+    private ArrayList<String> parteInicialEvaluada;
+
+    public ArrayList<String> getParteFinalEvaluada() {
+        return parteFinalEvaluada;
+    }
+
+    public void setParteFinalEvaluada(ArrayList<String> parteFinalEvaluada) {
+        this.parteFinalEvaluada = parteFinalEvaluada;
+    }
+
+    public ArrayList<String> getParteInicialEvaluada() {
+        return parteInicialEvaluada;
+    }
+
+    public void setParteInicialEvaluada(ArrayList<String> parteInicialEvaluada) {
+        this.parteInicialEvaluada = parteInicialEvaluada;
+    }
 
     public LetraYValor() {
         valor = new HashMap<>();
         resultadoEvaluacion = new ArrayList<>();
+        resultadoEvaluacionFomulas = new ArrayList<>();
+    }
+
+    public ArrayList<ArrayList<String>> getResultadoEvaluacionFomulas() {
+        return resultadoEvaluacionFomulas;
+    }
+
+    public void setResultadoEvaluacionFomulas(ArrayList<ArrayList<String>> resultadoEvaluacionFomulas) {
+        this.resultadoEvaluacionFomulas = resultadoEvaluacionFomulas;
     }
 
     public ArrayList<String> getResultadoEvaluacion() {
