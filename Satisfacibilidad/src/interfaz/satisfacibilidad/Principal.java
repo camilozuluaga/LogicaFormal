@@ -6,6 +6,7 @@
 package interfaz.satisfacibilidad;
 
 import java.awt.Robot;
+import javax.swing.JTable;
 import logica.satisfacibilidad.CustomFont;
 import logica.satisfacibilidad.LogicaSatisfacibilidad;
 
@@ -26,7 +27,6 @@ public class Principal extends javax.swing.JFrame {
 
     public Principal() {
         initComponents();
-
         txtInsertarFormula.setFont(cf.MyFont(0, 26));
         txtFormulasProposicionales.setFont(cf.MyFont(0, 26));
         this.setSize(1117, 555);
@@ -394,7 +394,8 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTablaActionPerformed
-        
+        GenerarTabla generarTabla = new GenerarTabla(logicaSatisfacibilidad);
+        generarTabla.setVisible(true);
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
 
     private void btnAgregarNegacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarNegacionActionPerformed
@@ -468,7 +469,7 @@ public class Principal extends javax.swing.JFrame {
             txtFormulasProposicionales.append(txtInsertarFormula.getText());
             txtFormulasProposicionales.append("\n");
             txtInsertarFormula.setText("");
-            //logicaSatisfacibilidad.ObtenerLetras();
+            logicaSatisfacibilidad.ObtenerLetras();
         }
     }//GEN-LAST:event_btnAgregarFormulaActionPerformed
 

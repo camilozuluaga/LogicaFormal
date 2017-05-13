@@ -20,7 +20,17 @@ public class LetraYValor {
     private ArrayList<ArrayList<String>> resultadoEvaluacionFomulas;
     private ArrayList<String> parteFinalEvaluada;
     private ArrayList<String> parteInicialEvaluada;
+    private ArrayList<String> formulas;
 
+    public ArrayList<String> getFormulas() {
+        return formulas;
+    }
+
+    public void setFormulas(ArrayList<String> formulas) {
+        this.formulas = formulas;
+    }
+    
+    
     public ArrayList<String> getParteFinalEvaluada() {
         return parteFinalEvaluada;
     }
@@ -41,6 +51,7 @@ public class LetraYValor {
         valor = new HashMap<>();
         resultadoEvaluacion = new ArrayList<>();
         resultadoEvaluacionFomulas = new ArrayList<>();
+        formulas = new ArrayList<>();
     }
 
     public ArrayList<ArrayList<String>> getResultadoEvaluacionFomulas() {
