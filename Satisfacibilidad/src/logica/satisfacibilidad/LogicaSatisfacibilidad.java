@@ -186,6 +186,7 @@ public class LogicaSatisfacibilidad {
     }
 
     public void obtenerLetras(char[] formulas) {
+        int contadorLetras = 0;
         for (int i = 0; i < formulas.length; i++) {
             if ((formulas[i] == 'P') || (formulas[i] == 'Q')
                     || (formulas[i] == 'R') || (formulas[i] == 'S')
@@ -193,8 +194,13 @@ public class LogicaSatisfacibilidad {
                 if (!this.letrasFormula.contains(formulas[i])) {
                     this.letrasFormula.add(formulas[i]);
                     agregarLetraProposicional.add(formulas[i]);
+                    contadorLetras++;
+
                 }
             }
+        }
+        if (contadorLetras > letraYvalor.getNumeroDeLetrasProp()) {
+            letraYvalor.setNumeroDeLetrasProp(contadorLetras);
         }
     }
 
@@ -222,9 +228,10 @@ public class LogicaSatisfacibilidad {
                 if (contadorParentesis == 0) {
                     ordenSimbolo.add(obtenerSimbolo(formulas[i + 1]));
                     obtenerSimbolos(formula, ordenSimbolo.peek());
-                    contadorParentesis = 1;
+                    break;
                 }
             }
+            contadorParentesis = 0;
         }
     }
 
@@ -254,29 +261,38 @@ public class LogicaSatisfacibilidad {
      * @param simboloPrincipal, el simbolo principal de la formula
      */
     public void obtenerSimbolos(String formula, String simboloPrincipal) {
+
+        letraYvalor.getFormulas().add(formula);
+        letraYvalor.setParteFinalEvaluada(new ArrayList<>());
+        letraYvalor.setParteInicialEvaluada(new ArrayList<>());
+        String restoFormula;
+        String finalFormula;
+        String negacionSimboloPrincipal = "";
+
+        if (letraYvalor.getValor().isEmpty()) {
+            asociarNumerosALetra();
+        }
+
         if (simboloPrincipal.length() > 0) {
-            letraYvalor.getFormulas().add(formula);
-            letraYvalor.setParteFinalEvaluada(new ArrayList<>());
-            letraYvalor.setParteInicialEvaluada(new ArrayList<>());
-            String restoFormula = "";
-            String finalFormula = "";
-            String negacionSimboloPrincipal = "";
+
             if (!ordenSimbolo.isEmpty()) {
                 ordenSimbolo.pop();
             }
+
             if (simboloPrincipal.equals("~")) {
                 formula = formula.substring(formula.indexOf("(") + 1, formula.length());
                 formula = formula.substring(0, formula.lastIndexOf(")"));
                 negacionSimboloPrincipal = "~";
                 simboloPrincipal = obtenerOperadorPrincipal(formula);
             }
-            restoFormula = formula.split(simboloPrincipal, 0)[0];
+
+            restoFormula = formula.substring(0, formula.indexOf(simboloPrincipal));
             finalFormula = formula.substring(formula.indexOf(simboloPrincipal), formula.length());
             finalFormula = finalFormula.substring(finalFormula.indexOf("("), finalFormula.length());
 
             letraYvalor.setParteFinalEvaluada(evaluarParteFormula(finalFormula));
             letraYvalor.setParteInicialEvaluada(evaluarParteFormula(restoFormula));
-            //letraYvalor.setResultadoEvaluacion(llamarMetodo(simboloPrincipal, "", "", ""));
+
             if (!negacionSimboloPrincipal.isEmpty()) {
                 resultadoFormula(negacionSimboloPrincipal);
             } else {
@@ -288,13 +304,21 @@ public class LogicaSatisfacibilidad {
 
     public ArrayList<String> evaluarParteFormula(String fragmentoFormula) {
         ArrayList<String> retorno = new ArrayList<>();
+        letraYvalor.setResultadoEvaluacion(new ArrayList<>());
         ordenSimbolo.add(" ");
         llenarPilaOrdenFormula(fragmentoFormula);
-        asociarNumerosALetra();
+        fragmentoFormula = fragmentoFormula.replace("(", "");
+        fragmentoFormula = fragmentoFormula.replace(")", "");
         if (fragmentoFormula.length() <= 3) {
-            fragmentoFormula = fragmentoFormula.replace("(", "");
-            fragmentoFormula = fragmentoFormula.replace(")", "");
-            retorno = letraYvalor.getValor().get(fragmentoFormula);
+            
+            System.out.println();
+            System.out.println(fragmentoFormula.substring(1));
+            if (fragmentoFormula.toCharArray()[0] == '~') {
+                retorno = llamarMetodo("~", String.valueOf(fragmentoFormula.toCharArray()[1]), "", "");
+            } else {
+                retorno = letraYvalor.getValor().get(fragmentoFormula);
+            }
+
         } else {
             retorno = evaluarFormula();
         }
@@ -385,13 +409,13 @@ public class LogicaSatisfacibilidad {
      */
     public void GenerarNumerosPorLetra() {
         Queue<Character> letras = this.letrasFormula;
-        double a = Math.pow(2, letras.size());
+        double a = Math.pow(2, letraYvalor.getNumeroDeLetrasProp());
         this.contador = 1;
         while (!letras.isEmpty()) {
             char clave = letras.poll();
             a = a / 2;
             if (a == 1) {
-                this.contador = 16;
+                this.contador = (int) Math.pow(2, letraYvalor.getNumeroDeLetrasProp());
             }
             for (int i = 0; i < this.contador; i++) {
                 ponerUnos(a);
@@ -641,7 +665,6 @@ public class LogicaSatisfacibilidad {
      * @return el resultado en un arreglo de la formula evaluada
      */
     public ArrayList<String> evaluarFormula() {
-        asociarNumerosALetra();
         String cabeza = ordenSimbolo.pop();
         String aux = cabeza;
         String aux2 = "";
@@ -695,7 +718,7 @@ public class LogicaSatisfacibilidad {
     public ArrayList<String> llamarMetodo(String inicial, String letraUno, String letraDos, String negacion) {
         switch (inicial) {
             case "~":
-                return resultadoSimboloNegacion(inicial, inicial);
+                return resultadoSimboloNegacion(letraUno, negacion);
             case "->":
                 return resultadoSimboloEntonces(letraUno, letraDos, negacion);
             case "<->":

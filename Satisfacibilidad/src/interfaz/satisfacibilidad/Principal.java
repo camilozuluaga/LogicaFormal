@@ -394,6 +394,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTablaActionPerformed
+        logicaSatisfacibilidad.ObtenerLetras();
         GenerarTabla generarTabla = new GenerarTabla(logicaSatisfacibilidad);
         generarTabla.setVisible(true);
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
@@ -469,7 +470,7 @@ public class Principal extends javax.swing.JFrame {
             txtFormulasProposicionales.append(txtInsertarFormula.getText());
             txtFormulasProposicionales.append("\n");
             txtInsertarFormula.setText("");
-            logicaSatisfacibilidad.ObtenerLetras();
+
         }
     }//GEN-LAST:event_btnAgregarFormulaActionPerformed
 

@@ -21,6 +21,15 @@ public class LetraYValor {
     private ArrayList<String> parteFinalEvaluada;
     private ArrayList<String> parteInicialEvaluada;
     private ArrayList<String> formulas;
+    private int numeroDeLetrasProp;
+
+    public int getNumeroDeLetrasProp() {
+        return numeroDeLetrasProp;
+    }
+
+    public void setNumeroDeLetrasProp(int numeroDeLetrasProp) {
+        this.numeroDeLetrasProp = numeroDeLetrasProp;
+    }
 
     public ArrayList<String> getFormulas() {
         return formulas;
@@ -29,8 +38,7 @@ public class LetraYValor {
     public void setFormulas(ArrayList<String> formulas) {
         this.formulas = formulas;
     }
-    
-    
+
     public ArrayList<String> getParteFinalEvaluada() {
         return parteFinalEvaluada;
     }
@@ -52,6 +60,7 @@ public class LetraYValor {
         resultadoEvaluacion = new ArrayList<>();
         resultadoEvaluacionFomulas = new ArrayList<>();
         formulas = new ArrayList<>();
+        numeroDeLetrasProp = 0;
     }
 
     public ArrayList<ArrayList<String>> getResultadoEvaluacionFomulas() {
