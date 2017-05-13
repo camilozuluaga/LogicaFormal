@@ -390,7 +390,7 @@ public class LogicaSatisfacibilidad {
         while (!letras.isEmpty()) {
             char clave = letras.poll();
             a = a / 2;
-            if(a == 1){
+            if (a == 1) {
                 this.contador = 16;
             }
             for (int i = 0; i < this.contador; i++) {
@@ -726,6 +726,7 @@ public class LogicaSatisfacibilidad {
     }
 
     public void resultadoFormula(String operadorPrincipal) {
+        System.out.println("el resultado de la formula es " + llamarMetodo(operadorPrincipal, "", "", ""));
         letraYvalor.setResultadoEvaluacion(llamarMetodo(operadorPrincipal, "", "", ""));
         letraYvalor.getResultadoEvaluacionFomulas().add(llamarMetodo(operadorPrincipal, "", "", ""));
 
