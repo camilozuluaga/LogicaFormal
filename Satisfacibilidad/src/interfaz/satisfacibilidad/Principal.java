@@ -33,7 +33,7 @@ public class Principal extends javax.swing.JFrame {
         logicaSatisfacibilidad = new LogicaSatisfacibilidad();
         txtInsertarFormula.requestFocus();
         this.setResizable(false);
-        txtInsertarFormula.setEditable(false);
+        //txtInsertarFormula.setEditable(false);
         txtFormulasProposicionales.setEditable(false);
         lblPosicionCursor.setVisible(false);
         lblPosicion.setVisible(false);
@@ -393,9 +393,11 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTablaActionPerformed
-        logicaSatisfacibilidad.ObtenerLetras();
-        GenerarTabla generarTabla = new GenerarTabla(logicaSatisfacibilidad);
-        generarTabla.setVisible(true);
+        if (logicaSatisfacibilidad.getAgregarFormula().size() >= 3) {
+            logicaSatisfacibilidad.ObtenerLetras();
+            GenerarTabla generarTabla = new GenerarTabla(logicaSatisfacibilidad);
+            generarTabla.setVisible(true);
+        }
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
 
     private void btnAgregarNegacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarNegacionActionPerformed

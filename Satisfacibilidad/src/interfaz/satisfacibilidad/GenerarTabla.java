@@ -5,7 +5,6 @@
  */
 package interfaz.satisfacibilidad;
 
-import javax.swing.table.DefaultTableModel;
 import logica.satisfacibilidad.LogicaSatisfacibilidad;
 
 /**

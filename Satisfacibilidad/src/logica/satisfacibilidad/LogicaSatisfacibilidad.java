@@ -5,6 +5,8 @@
  */
 package logica.satisfacibilidad;
 
+import com.sun.org.apache.xpath.internal.operations.Quo;
+import java.util.AbstractQueue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -187,18 +189,26 @@ public class LogicaSatisfacibilidad {
         return posicionMetodo;
     }
 
-    public void obtenerLetras(char[] formulas) {
+    public void obtenerLetras(Queue<String> formulas) {
         int contadorLetras = 0;
         ArrayList<Character> letras = new ArrayList<>();
-        for (int i = 0; i < formulas.length; i++) {
-            if ((formulas[i] == 'P') || (formulas[i] == 'Q')
-                    || (formulas[i] == 'R') || (formulas[i] == 'S')
-                    || (formulas[i] == 'T')) {
-                if (!letras.contains(formulas[i])) {
-                    letras.add(formulas[i]);
-                    contadorLetras++;
+        while (!formulas.isEmpty()) {
+            String formula = formulas.poll();
+            char[] formulaDescompuesta = formula.toCharArray();
+            for (int i = 0; i < formulaDescompuesta.length; i++) {
+                if ((formulaDescompuesta[i] == 'P') || (formulaDescompuesta[i] == 'Q')
+                        || (formulaDescompuesta[i] == 'R') || (formulaDescompuesta[i] == 'S')
+                        || (formulaDescompuesta[i] == 'T')) {
+                    if (!letras.contains(formulaDescompuesta[i])) {
+                        letras.add(formulaDescompuesta[i]);
+                        contadorLetras++;
 
+                    }
                 }
+            }
+
+            if (contadorLetras > letraYvalor.getNumeroDeLetrasProp()) {
+                letraYvalor.setNumeroDeLetrasProp(contadorLetras);
             }
         }
         Collections.sort(letras);
@@ -207,9 +217,6 @@ public class LogicaSatisfacibilidad {
             agregarLetraProposicional.add(letras.get(i));
         }
 
-        if (contadorLetras > letraYvalor.getNumeroDeLetrasProp()) {
-            letraYvalor.setNumeroDeLetrasProp(contadorLetras);
-        }
     }
 
     /**
@@ -219,10 +226,12 @@ public class LogicaSatisfacibilidad {
      */
     public void ObtenerLetras() {
         int contadorParentesis = 0;
+
         while (!this.agregarFormula.isEmpty()) {
+            Queue<String> formulasAgregadas = new LinkedList<>(this.agregarFormula);
+            obtenerLetras(formulasAgregadas);
             String formula = this.agregarFormula.poll();
             char[] formulas = formula.toCharArray();
-            obtenerLetras(formulas);
             for (int i = 0; i < formulas.length; i++) {
                 if (formulas[0] == '~') {
                     obtenerSimbolos(formula, "~");
@@ -236,7 +245,7 @@ public class LogicaSatisfacibilidad {
                 if (contadorParentesis == 0) {
                     ordenSimbolo.add(obtenerSimbolo(formulas[i + 1]));
                     obtenerSimbolos(formula, ordenSimbolo.peek());
-                break;
+                    break;
                 }
             }
             contadorParentesis = 0;
@@ -809,10 +818,23 @@ public class LogicaSatisfacibilidad {
     }
 
     public void cargarTabla(JTable datos) {
-        modeloTabla = (DefaultTableModel) datos.getModel();
+
         datos.removeAll();
+        int contafilas = 0;
         for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
             modeloTabla.addColumn(letraYvalor.getFormulas().get(i));
+            int conta = 0;
+            String[] filas = new String[letraYvalor.getResultadoEvaluacionFomulas().get(i).size()];
+            System.out.println(letraYvalor.getResultadoEvaluacionFomulas().get(i).size());
+            while (conta < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
+                modeloTabla.insertRow(contafilas, new Object[]{letraYvalor.getResultadoEvaluacionFomulas().get(contafilas).get(conta)});
+                conta++;
+
+            }
+
+            contafilas++;
+            modeloTabla.addRow(filas);
+
         }
 
         datos.setModel(modeloTabla);
