@@ -6,7 +6,6 @@
 package interfaz.satisfacibilidad;
 
 import java.awt.Robot;
-import javax.swing.JTable;
 import logica.satisfacibilidad.CustomFont;
 import logica.satisfacibilidad.LogicaSatisfacibilidad;
 
@@ -34,7 +33,7 @@ public class Principal extends javax.swing.JFrame {
         logicaSatisfacibilidad = new LogicaSatisfacibilidad();
         txtInsertarFormula.requestFocus();
         this.setResizable(false);
-        //txtInsertarFormula.setEditable(false);
+        txtInsertarFormula.setEditable(false);
         txtFormulasProposicionales.setEditable(false);
         lblPosicionCursor.setVisible(false);
         lblPosicion.setVisible(false);
