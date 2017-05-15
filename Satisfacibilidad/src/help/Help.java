@@ -32,7 +32,7 @@ public class Help extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(this);
         setResizable(false);
-        setTitle("Ayuda AgenSoft");
+        setTitle("Ayuda");
         this.setBounds(100, 100, 900, 500);
         //propiedades de splipanel
         jSplitPane1.setOneTouchExpandable(true);
