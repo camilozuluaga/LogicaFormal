@@ -838,10 +838,12 @@ public class LogicaSatisfacibilidad {
             contador = 0;
         }
         datos.setModel(modeloTabla);
+        
+        System.out.println("");
 
-
-        int tamanio= (int) Math.pow(2, letraYvalor.getFormulas().size());
+        int tamanio= letraYvalor.getResultadoEvaluacionFomulas().get(0).size();
         int resul= tamanio * (letraYvalor.getFormulas().size() -1);
+        System.out.println("El result es: " + resul);
         for (int i = 0; i < resul; i++) {
             modeloTabla.removeRow(0);
         }

@@ -1,6 +1,6 @@
 >[Acerca][acerca]
-   |[Operador ->][contactos]
-      - [Guardar Contactos][guardar]
+   |[Operadores][contactos]
+      - [Operadores Contactos][guardar]
       - [Buscar Contactos][buscar]
       - [Editar Contactos][editar]
       - [Eliminar Contactos][eliminar]
