@@ -5,10 +5,10 @@
  */
 package interfaz.satisfacibilidad;
 
+import help.Help;
 import java.awt.Robot;
 import javax.swing.JOptionPane;
 import logica.satisfacibilidad.CustomFont;
-import logica.satisfacibilidad.LetraYValor;
 import logica.satisfacibilidad.LogicaSatisfacibilidad;
 
 /**
@@ -22,12 +22,11 @@ public class Principal extends javax.swing.JFrame {
      */
     Robot robot;
     LogicaSatisfacibilidad logicaSatisfacibilidad;
-    LetraYValor letraYValor;
     GenerarTabla generar;
     int posicionRetornaBoton = 0;
     CustomFont cf = new CustomFont();
-    boolean presionoVerTabla = false;
-
+    boolean presionoVerTabla= false;
+    
     public Principal() {
         initComponents();
         txtInsertarFormula.setFont(cf.MyFont(0, 26));
@@ -35,10 +34,9 @@ public class Principal extends javax.swing.JFrame {
         this.setSize(1117, 555);
         this.setLocationRelativeTo(this);
         logicaSatisfacibilidad = new LogicaSatisfacibilidad();
-        letraYValor = new LetraYValor();
         txtInsertarFormula.requestFocus();
         this.setResizable(false);
-        txtInsertarFormula.setEditable(false);
+        //txtInsertarFormula.setEditable(false);
         txtFormulasProposicionales.setEditable(false);
         lblPosicionCursor.setVisible(false);
         lblPosicion.setVisible(false);
@@ -78,6 +76,11 @@ public class Principal extends javax.swing.JFrame {
         btnPosicionarCursor = new javax.swing.JButton();
         lblPosicionCursor = new javax.swing.JLabel();
         lblPosicion = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -340,11 +343,13 @@ public class Principal extends javax.swing.JFrame {
                             .addGroup(jcMousePanel1Layout.createSequentialGroup()
                                 .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jcMousePanel1Layout.createSequentialGroup()
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(jcMousePanel1Layout.createSequentialGroup()
                                         .addComponent(btnGenerarTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnPosicionarCursor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -373,7 +378,7 @@ public class Principal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPosicionarCursor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jcMousePanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnGenerarTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -390,6 +395,34 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().add(jcMousePanel1);
         jcMousePanel1.setBounds(0, 0, 1108, 525);
 
+        jMenu1.setText("Participantes");
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("Integrantes");
+        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jCheckBoxMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Ayuda");
+
+        jCheckBoxMenuItem2.setSelected(true);
+        jCheckBoxMenuItem2.setText("Ayuda");
+        jCheckBoxMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jCheckBoxMenuItem2);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -398,7 +431,7 @@ public class Principal extends javax.swing.JFrame {
             logicaSatisfacibilidad.ObtenerLetras();
             GenerarTabla generarTabla = new GenerarTabla(logicaSatisfacibilidad);
             generarTabla.setVisible(true);
-            presionoVerTabla = true;
+            presionoVerTabla= true;
         }
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
 
@@ -480,6 +513,7 @@ public class Principal extends javax.swing.JFrame {
     private void btnVerificarSatisfaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarSatisfaActionPerformed
         if (presionoVerTabla) {
             JOptionPane.showMessageDialog(this, logicaSatisfacibilidad.getSatisfacible());
+
         }
     }//GEN-LAST:event_btnVerificarSatisfaActionPerformed
 
@@ -499,6 +533,18 @@ public class Principal extends javax.swing.JFrame {
     private void txtInsertarFormulaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtInsertarFormulaMouseClicked
 
     }//GEN-LAST:event_txtInsertarFormulaMouseClicked
+
+    private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        Help help = new Help();
+        help.setVisible(true);
+    }//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
+
+    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        Integrantes integrantes= new Integrantes();
+        integrantes.setVisible(true);
+    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -551,6 +597,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnGenerarTabla;
     private javax.swing.JButton btnPosicionarCursor;
     private javax.swing.JButton btnVerificarSatisfa;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
