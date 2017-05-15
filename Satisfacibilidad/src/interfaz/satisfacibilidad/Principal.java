@@ -6,7 +6,9 @@
 package interfaz.satisfacibilidad;
 
 import java.awt.Robot;
+import javax.swing.JOptionPane;
 import logica.satisfacibilidad.CustomFont;
+import logica.satisfacibilidad.LetraYValor;
 import logica.satisfacibilidad.LogicaSatisfacibilidad;
 
 /**
@@ -20,9 +22,11 @@ public class Principal extends javax.swing.JFrame {
      */
     Robot robot;
     LogicaSatisfacibilidad logicaSatisfacibilidad;
+    LetraYValor letraYValor;
     GenerarTabla generar;
     int posicionRetornaBoton = 0;
     CustomFont cf = new CustomFont();
+    boolean presionoVerTabla = false;
 
     public Principal() {
         initComponents();
@@ -31,9 +35,10 @@ public class Principal extends javax.swing.JFrame {
         this.setSize(1117, 555);
         this.setLocationRelativeTo(this);
         logicaSatisfacibilidad = new LogicaSatisfacibilidad();
+        letraYValor = new LetraYValor();
         txtInsertarFormula.requestFocus();
         this.setResizable(false);
-        //txtInsertarFormula.setEditable(false);
+        txtInsertarFormula.setEditable(false);
         txtFormulasProposicionales.setEditable(false);
         lblPosicionCursor.setVisible(false);
         lblPosicion.setVisible(false);
@@ -96,7 +101,6 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnVerificarSatisfa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/recursos.imagenes/verificar.png"))); // NOI18N
-        btnVerificarSatisfa.setText("Verificar Satisfacibilidad");
         btnVerificarSatisfa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVerificarSatisfaActionPerformed(evt);
@@ -338,13 +342,11 @@ public class Principal extends javax.swing.JFrame {
                                     .addGroup(jcMousePanel1Layout.createSequentialGroup()
                                         .addComponent(btnGenerarTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(jcMousePanel1Layout.createSequentialGroup()
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
+                                        .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                                    .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnPosicionarCursor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnAgregarFormula, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -367,7 +369,6 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jcMousePanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
                         .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPosicionarCursor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -383,7 +384,7 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jcMousePanel1);
@@ -397,6 +398,7 @@ public class Principal extends javax.swing.JFrame {
             logicaSatisfacibilidad.ObtenerLetras();
             GenerarTabla generarTabla = new GenerarTabla(logicaSatisfacibilidad);
             generarTabla.setVisible(true);
+            presionoVerTabla = true;
         }
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
 
@@ -476,9 +478,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarFormulaActionPerformed
 
     private void btnVerificarSatisfaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarSatisfaActionPerformed
-        if (logicaSatisfacibilidad.getAgregarFormula().size() >= 3) {
-            System.out.println("algo");
-
+        if (presionoVerTabla) {
+            JOptionPane.showMessageDialog(this, logicaSatisfacibilidad.getSatisfacible());
         }
     }//GEN-LAST:event_btnVerificarSatisfaActionPerformed
 

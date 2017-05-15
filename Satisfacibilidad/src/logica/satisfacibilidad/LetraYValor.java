@@ -15,13 +15,13 @@ import java.util.Map;
  */
 public class LetraYValor {
 
-    private Map<String, ArrayList> valor;
-    private ArrayList<String> resultadoEvaluacion;
-    private ArrayList<ArrayList<String>> resultadoEvaluacionFomulas;
+    private Map<String, ArrayList> valor = new HashMap<>();
+    private ArrayList<String> resultadoEvaluacion = new ArrayList<>();
+    private ArrayList<ArrayList<String>> resultadoEvaluacionFomulas = new ArrayList<>();
     private ArrayList<String> parteFinalEvaluada;
     private ArrayList<String> parteInicialEvaluada;
-    private ArrayList<String> formulas;
-    private int numeroDeLetrasProp;
+    private ArrayList<String> formulas = new ArrayList<>();
+    private int numeroDeLetrasProp = 0;
 
     public int getNumeroDeLetrasProp() {
         return numeroDeLetrasProp;
@@ -53,14 +53,6 @@ public class LetraYValor {
 
     public void setParteInicialEvaluada(ArrayList<String> parteInicialEvaluada) {
         this.parteInicialEvaluada = parteInicialEvaluada;
-    }
-
-    public LetraYValor() {
-        valor = new HashMap<>();
-        resultadoEvaluacion = new ArrayList<>();
-        resultadoEvaluacionFomulas = new ArrayList<>();
-        formulas = new ArrayList<>();
-        numeroDeLetrasProp = 0;
     }
 
     public ArrayList<ArrayList<String>> getResultadoEvaluacionFomulas() {

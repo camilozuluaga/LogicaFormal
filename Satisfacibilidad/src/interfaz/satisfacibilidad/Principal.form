@@ -62,14 +62,11 @@
                                       <Group type="102" attributes="0">
                                           <Component id="btnGenerarTabla" max="32767" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="btnVerificarSatisfa" min="-2" pref="240" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="btnVerificarSatisfa" min="-2" pref="249" max="-2" attributes="0"/>
                                       </Group>
-                                      <Group type="102" attributes="0">
-                                          <Component id="jScrollPane1" min="-2" pref="463" max="-2" attributes="0"/>
-                                          <EmptySpace pref="18" max="32767" attributes="0"/>
-                                      </Group>
+                                      <Component id="jScrollPane1" min="-2" pref="463" max="-2" attributes="0"/>
                                   </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="btnBorrar" max="32767" attributes="0"/>
                                       <Component id="btnPosicionarCursor" alignment="0" max="32767" attributes="0"/>
@@ -156,7 +153,6 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/recursos/recursos.imagenes/verificar.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Verificar Satisfacibilidad"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerificarSatisfaActionPerformed"/>

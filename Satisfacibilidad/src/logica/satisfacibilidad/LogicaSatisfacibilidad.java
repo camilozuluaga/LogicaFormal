@@ -5,8 +5,6 @@
  */
 package logica.satisfacibilidad;
 
-import com.sun.org.apache.xpath.internal.operations.Quo;
-import java.util.AbstractQueue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -69,13 +67,21 @@ public class LogicaSatisfacibilidad {
     String negacionPrincipio = "";
     int contador = 0;
     int posicionesBoton = 1;
-
+    String satisfacible="";
     public Queue<String> getAgregarFormula() {
         return agregarFormula;
     }
 
     public void setAgregarFormula(Queue<String> agregarFormula) {
         this.agregarFormula = agregarFormula;
+    }
+
+    public String getSatisfacible() {
+        return satisfacible;
+    }
+
+    public void setSatisfacible(String satisfacible) {
+        this.satisfacible = satisfacible;
     }
 
     public Stack<String> getLetrasAgregadas() {
@@ -666,12 +672,12 @@ public class LogicaSatisfacibilidad {
         }
 
         for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
-            if ((valoresPrimeraLetra.get(i).equals("1") && valoresSegundaLetra.get(i).equals("1"))
-                    || (valoresPrimeraLetra.get(i).equals("0") && valoresSegundaLetra.get(i).equals("0"))) {
-                retorno.add("1");
+            if ((valoresPrimeraLetra.get(i).equals("1") || valoresSegundaLetra.get(i).equals("1"))
+                    && (valoresPrimeraLetra.get(i).equals("0") || valoresSegundaLetra.get(i).equals("0"))) {
+                retorno.add("0");
                 continue;
             }
-            retorno.add("0");
+            retorno.add("1");
         }
         return retorno;
     }
@@ -822,14 +828,13 @@ public class LogicaSatisfacibilidad {
             modeloTabla.addColumn(letraYvalor.getFormulas().get(i));
         }
         datos.removeAll();
-    
+
         String[] fila = new String[letraYvalor.getFormulas().size()];
 
         int contador = 0;
         int iterador = 0;
 
-
-        for (int i = 0; i <= letraYvalor.getFormulas().size() -1; i++) {
+        for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
             while (contador < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
                 fila[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contador);
                 modeloTabla.addRow(fila);
@@ -838,29 +843,64 @@ public class LogicaSatisfacibilidad {
             contador = 0;
         }
         datos.setModel(modeloTabla);
-        
+
         System.out.println("");
 
-        int tamanio= letraYvalor.getResultadoEvaluacionFomulas().get(0).size();
-        int resul= tamanio * (letraYvalor.getFormulas().size() -1);
+        int tamanio = letraYvalor.getResultadoEvaluacionFomulas().get(0).size();
+        int resul = tamanio * (letraYvalor.getFormulas().size() - 1);
         System.out.println("El result es: " + resul);
         for (int i = 0; i < resul; i++) {
             modeloTabla.removeRow(0);
         }
-        
+
         String[] filaDos = new String[letraYvalor.getFormulas().size()];
         int contadorDos = 0;
         int iteradorDos = 0;
 
-        for (int i = 0; i <= letraYvalor.getFormulas().size() -1; i++) {
+        for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
             while (contadorDos < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
                 filaDos[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contadorDos);
-                 modeloTabla.setValueAt(filaDos[i], contadorDos, i);
+                modeloTabla.setValueAt(filaDos[i], contadorDos, i);
                 contadorDos++;
             }
             contadorDos = 0;
         }
         datos.setModel(modeloTabla);
+        generarSatisfacibilidad();
+
+    }
+
+    public void generarSatisfacibilidad() {
+        ArrayList<Integer> posicionesUnos = new ArrayList<>();
+        ArrayList<Integer> satisfacible = new ArrayList<>();
+        int contadorSatisfacisbilidad = 0;
+        for (int i = 0; i < letraYvalor.getResultadoEvaluacionFomulas().size(); i++) {
+            for (int j = 0; j < letraYvalor.getResultadoEvaluacionFomulas().get(i).size(); j++) {
+                if (letraYvalor.getResultadoEvaluacionFomulas().get(i).get(j).equals("1")) {
+                    posicionesUnos.add(j);
+                }
+            }
+        }
+        
+        for (int i = 0; i < posicionesUnos.size(); i++) {
+            for (int j = 0; j < posicionesUnos.size(); j++) {
+                if(posicionesUnos.get(j).equals(posicionesUnos.get(i))){
+                    contadorSatisfacisbilidad++;
+                }
+            }
+            if(contadorSatisfacisbilidad == letraYvalor.getFormulas().size()){
+                this.satisfacible = "El conjunto de formulas es Satisfacible";
+                break;
+            }else{
+                contadorSatisfacisbilidad=0;
+            }
+        }
+        
+        
+        if(this.satisfacible.isEmpty()){
+            this.satisfacible ="El conjunto de formulas es Insatisfacible";
+        }
+
     }
 
 }
