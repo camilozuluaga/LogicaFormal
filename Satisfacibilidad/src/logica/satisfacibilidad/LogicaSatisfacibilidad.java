@@ -818,53 +818,47 @@ public class LogicaSatisfacibilidad {
     }
 
     public void cargarTabla(JTable datos) {
-        for (int i = 0; i < letraYvalor.getFormulas().size(); i++) {
+        for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
             modeloTabla.addColumn(letraYvalor.getFormulas().get(i));
         }
-
         datos.removeAll();
-        //Aca va la cantidad de formulas
+    
         String[] fila = new String[letraYvalor.getFormulas().size()];
 
-        int contadorMetodo = 0;
+        int contador = 0;
         int iterador = 0;
 
-        //Aca va la cantidad de formulas en el length
-        for (int i = 0; i < letraYvalor.getFormulas().size(); i++) {
-            while (contadorMetodo < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
 
-                fila[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contadorMetodo);
-                contadorMetodo++;
+        for (int i = 0; i <= letraYvalor.getFormulas().size() -1; i++) {
+            while (contador < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
+                fila[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contador);
+                modeloTabla.addRow(fila);
+                contador++;
             }
-
-            contadorMetodo = 0;
+            contador = 0;
         }
-
         datos.setModel(modeloTabla);
 
-        //Aca va lo que es de 2 a la tales multiplicado por 2  en el lengt pues
-        for (int i = 0; i < 16; i++) {
+
+        int tamanio= (int) Math.pow(2, letraYvalor.getFormulas().size());
+        int resul= tamanio * (letraYvalor.getFormulas().size() -1);
+        for (int i = 0; i < resul; i++) {
             modeloTabla.removeRow(0);
         }
-
+        
         String[] filaDos = new String[letraYvalor.getFormulas().size()];
         int contadorDos = 0;
         int iteradorDos = 0;
 
-        //Aca en el lenght la cantidad de formulas
-        for (int i = 0; i < letraYvalor.getFormulas().size(); i++) {
+        for (int i = 0; i <= letraYvalor.getFormulas().size() -1; i++) {
             while (contadorDos < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
-
                 filaDos[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contadorDos);
-                modeloTabla.setValueAt(filaDos[i], contadorDos, i);
+                 modeloTabla.setValueAt(filaDos[i], contadorDos, i);
                 contadorDos++;
             }
-
             contadorDos = 0;
         }
-
         datos.setModel(modeloTabla);
-
     }
 
 }
