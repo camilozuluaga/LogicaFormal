@@ -817,27 +817,115 @@ public class LogicaSatisfacibilidad {
 
     }
 
-    public void cargarTabla(JTable datos) {
+    public void llenarTabla(JTable jTabla, ArrayList<String> reservadas, ArrayList<String> palabra, ArrayList<String> linea) {
+
+        DefaultTableModel modelo = (DefaultTableModel) jTabla.getModel();
+        String[] fila = new String[3];
+
+        int contador = 0;
+        while (contador < reservadas.size()) {
+
+            fila[0] = reservadas.get(contador);
+            fila[1] = palabra.get(contador);
+            fila[2] = linea.get(contador);
+            modelo.addRow(fila);
+            contador++;
+        }
+
+        jTabla.setModel(modelo);
+    }
+
+    public void cargarTablac(JTable datos) {
 
         datos.removeAll();
         int contafilas = 0;
         for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
+
             modeloTabla.addColumn(letraYvalor.getFormulas().get(i));
             int conta = 0;
-            String[] filas = new String[letraYvalor.getResultadoEvaluacionFomulas().get(i).size()];
+
+            String[] fila = new String[3];
             System.out.println(letraYvalor.getResultadoEvaluacionFomulas().get(i).size());
-            while (conta < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
-                modeloTabla.insertRow(contafilas, new Object[]{letraYvalor.getResultadoEvaluacionFomulas().get(contafilas).get(conta)});
+
+            while (conta < 8) {
+
+                fila[0] = "1";
+                fila[1] = "1";
+                fila[2] = "1";
+                modeloTabla.addRow(fila);
+
                 conta++;
 
             }
 
+            datos.setModel(modeloTabla);
             contafilas++;
-            modeloTabla.addRow(filas);
 
         }
 
+    }
+
+    public void cargarTabla(JTable datos) {
+        for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
+            modeloTabla.addColumn(letraYvalor.getFormulas().get(i));
+        }
+
+        datos.removeAll();
+        //Aca va la cantidad de formulas
+        String[] fila = new String[3];
+
+        int contador = 0;
+        int iterador = 0;
+
+        //Aca va la cantidad de formulas en el length
+        for (int i = 0; i <= 2; i++) {
+            while (contador < 8) {
+
+                fila[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contador);
+                System.out.println("la i es: " + i);
+                System.out.println("contador: " + contador);
+
+                modeloTabla.addRow(fila);
+                //modeloTabla.insertRow(modeloTabla.getRowCount(), new Object[] { fila[0] });
+                // modeloTabla.setValueAt(new Object[] { fila[i] }, i, contador);
+                contador++;
+            }
+
+            contador = 0;
+        }
+
         datos.setModel(modeloTabla);
+
+        //Aca va lo que es de 2 a la tales multiplicado por 2  en el lengt pues
+        for (int i = 0; i < 16; i++) {
+            modeloTabla.removeRow(0);
+        }
+        
+        String[] filaDos = new String[3];
+        int contadorDos = 0;
+        int iteradorDos = 0;
+
+        
+        //Aca en el lenght la cantidad de formulas
+        for (int i = 0; i <= 2; i++) {
+            while (contadorDos < 8) {
+
+                filaDos[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contadorDos);
+                System.out.println("la i es sdf: " + i);
+                System.out.println("contador sf: " + contadorDos);
+
+                //modeloTabla.addRow(filaDos);
+               // modeloTabla.insertRow(1, new Object[] { "hola" });
+                 modeloTabla.setValueAt(filaDos[i], contadorDos, i);
+                contadorDos++;
+            }
+
+            contadorDos = 0;
+        }
+
+        datos.setModel(modeloTabla);
+        
+     
 
     }
 
