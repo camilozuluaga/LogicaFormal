@@ -20,7 +20,7 @@ public class GenerarTabla extends javax.swing.JFrame {
         initComponents();
         this.setAlwaysOnTop(true);
         setLocationRelativeTo(this);
-
+        jTablaDatos.removeAll();
         logicaSatisfacibilidad.cargarTabla(jTablaDatos);
         //logicaSatisfacibilidad.GenerarNumerosPorLetra(jTablaDatos);
     }

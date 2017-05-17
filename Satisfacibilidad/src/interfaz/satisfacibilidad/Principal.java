@@ -25,8 +25,8 @@ public class Principal extends javax.swing.JFrame {
     GenerarTabla generar;
     int posicionRetornaBoton = 0;
     CustomFont cf = new CustomFont();
-    boolean presionoVerTabla= false;
-    
+    boolean presionoVerTabla = false;
+
     public Principal() {
         initComponents();
         txtInsertarFormula.setFont(cf.MyFont(0, 26));
@@ -346,8 +346,9 @@ public class Principal extends javax.swing.JFrame {
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE))
                                     .addGroup(jcMousePanel1Layout.createSequentialGroup()
+                                        .addGap(3, 3, 3)
                                         .addComponent(btnGenerarTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnVerificarSatisfa, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jcMousePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -427,11 +428,13 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTablaActionPerformed
-        if (logicaSatisfacibilidad.getAgregarFormula().size() >= 3) {
-            logicaSatisfacibilidad.ObtenerLetras();
-            GenerarTabla generarTabla = new GenerarTabla(logicaSatisfacibilidad);
+
+        logicaSatisfacibilidad.ObtenerLetras();
+        GenerarTabla generarTabla = new GenerarTabla(logicaSatisfacibilidad);
+        if (logicaSatisfacibilidad.isVerInterfazTabla()) {
+
             generarTabla.setVisible(true);
-            presionoVerTabla= true;
+            presionoVerTabla = true;
         }
     }//GEN-LAST:event_btnGenerarTablaActionPerformed
 
@@ -511,10 +514,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarFormulaActionPerformed
 
     private void btnVerificarSatisfaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarSatisfaActionPerformed
-        if (presionoVerTabla) {
+        logicaSatisfacibilidad.ObtenerLetras();
+        logicaSatisfacibilidad.generarSatisfacibilidad();
+        if (logicaSatisfacibilidad.isVerMensajeSatisfacible()) {
             JOptionPane.showMessageDialog(this, logicaSatisfacibilidad.getSatisfacible());
-
         }
+
     }//GEN-LAST:event_btnVerificarSatisfaActionPerformed
 
     private void btnAgregarTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTActionPerformed
@@ -542,7 +547,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
         // TODO add your handling code here:
-        Integrantes integrantes= new Integrantes();
+        Integrantes integrantes = new Integrantes();
         integrantes.setVisible(true);
     }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 

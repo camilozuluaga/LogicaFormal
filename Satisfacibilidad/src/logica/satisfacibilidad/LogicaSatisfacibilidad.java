@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
@@ -46,6 +47,9 @@ public class LogicaSatisfacibilidad {
      */
     Queue<String> agregarFormula = new LinkedList<>();
 
+    /**
+     * cola que nos permite saber los valores de o y 1 para cada letra
+     */
     Queue<String> agregarValorPLetra = new LinkedList<>();
 
     Queue<Character> agregarLetraProposicional = new LinkedList<>();
@@ -67,7 +71,27 @@ public class LogicaSatisfacibilidad {
     String negacionPrincipio = "";
     int contador = 0;
     int posicionesBoton = 1;
-    String satisfacible="";
+    String satisfacible = "";
+    boolean verInterfazTabla = false;
+    boolean verMensajeSatisfacible = false;
+    ArrayList<String> retornoNegacion = new ArrayList<>();
+
+    public boolean isVerMensajeSatisfacible() {
+        return verMensajeSatisfacible;
+    }
+
+    public void setVerMensajeSatisfacible(boolean verMensajeSatisfacible) {
+        this.verMensajeSatisfacible = verMensajeSatisfacible;
+    }
+
+    public boolean isVerInterfazTabla() {
+        return verInterfazTabla;
+    }
+
+    public void setVerInterfazTabla(boolean verInterfazTabla) {
+        this.verInterfazTabla = verInterfazTabla;
+    }
+
     public Queue<String> getAgregarFormula() {
         return agregarFormula;
     }
@@ -202,9 +226,7 @@ public class LogicaSatisfacibilidad {
             String formula = formulas.poll();
             char[] formulaDescompuesta = formula.toCharArray();
             for (int i = 0; i < formulaDescompuesta.length; i++) {
-                if ((formulaDescompuesta[i] == 'P') || (formulaDescompuesta[i] == 'Q')
-                        || (formulaDescompuesta[i] == 'R') || (formulaDescompuesta[i] == 'S')
-                        || (formulaDescompuesta[i] == 'T')) {
+                if (obtenerLetra(formulaDescompuesta[i])) {
                     if (!letras.contains(formulaDescompuesta[i])) {
                         letras.add(formulaDescompuesta[i]);
                         contadorLetras++;
@@ -325,28 +347,38 @@ public class LogicaSatisfacibilidad {
         }
     }
 
+    /**
+     * Metodo que permite evaluar la formula, de acuerdo a una parte de la
+     * formula
+     *
+     * @param fragmentoFormula, el fragmento de la formula antes o despues de
+     * operador principal
+     * @return la evaluacion de la formula
+     */
     public ArrayList<String> evaluarParteFormula(String fragmentoFormula) {
         ArrayList<String> retorno = new ArrayList<>();
         letraYvalor.setResultadoEvaluacion(new ArrayList<>());
         ordenSimbolo.add(" ");
+        String verificarFormula = fragmentoFormula;
+        verificarFormula = verificarFormula.replace("(", "");
+        verificarFormula = verificarFormula.replace(")", "");
+        
         llenarPilaOrdenFormula(fragmentoFormula);
+
         if (fragmentoFormula.length() > 3) {
+            
             if ((fragmentoFormula.toCharArray()[1] == '~' && fragmentoFormula.toCharArray()[3] == '~')
-                    || (fragmentoFormula.toCharArray()[1] == '~' && (fragmentoFormula.toCharArray()[3] == 'P')
-                    || (fragmentoFormula.toCharArray()[3] == 'Q')
-                    || (fragmentoFormula.toCharArray()[3] == 'R') || (fragmentoFormula.toCharArray()[3] == 'S')
-                    || (fragmentoFormula.toCharArray()[3] == 'T'))) {
+                    || (fragmentoFormula.toCharArray()[1] == '~' && obtenerLetra(fragmentoFormula.toCharArray()[3]))) {
                 fragmentoFormula = fragmentoFormula.replace("(", "");
                 fragmentoFormula = fragmentoFormula.replace(")", "");
-            } else if ((fragmentoFormula.toCharArray()[1] == 'P') || (fragmentoFormula.toCharArray()[1] == 'Q')
-                    || (fragmentoFormula.toCharArray()[1] == 'R') || (fragmentoFormula.toCharArray()[1] == 'S')
-                    || (fragmentoFormula.toCharArray()[1] == 'T')) {
+            } else if (obtenerLetra(fragmentoFormula.toCharArray()[1])) {
                 fragmentoFormula = fragmentoFormula.replace("(", "");
                 fragmentoFormula = fragmentoFormula.replace(")", "");
             }
         }
 
         if (fragmentoFormula.length() <= 3) {
+            ordenSimbolo.removeAllElements();
             if (fragmentoFormula.toCharArray()[0] == '~' && fragmentoFormula.toCharArray()[1] == '~') {
                 String negacion = "~" + fragmentoFormula.toCharArray()[2];
                 retorno = llamarMetodo("~", String.valueOf(fragmentoFormula.toCharArray()[2]), "", "");
@@ -366,9 +398,27 @@ public class LogicaSatisfacibilidad {
                 this.negacionPrincipio = negacion;
                 letraYvalor.getValor().put(negacion, llamarMetodo("~", String.valueOf(fragmentoFormula.toCharArray()[4]), "", ""));
             }
+            buscarNegacionEnFormula(verificarFormula.toCharArray(), 0);
             retorno = evaluarFormula();
         }
         return retorno;
+    }
+
+    public void buscarNegacionEnFormula(char[] formula, int i) {
+
+        if (i == formula.length) {
+
+        } else if (formula[i] == '~') {
+            if (obtenerLetra(formula[i + 1])) {
+                retornoNegacion = resultadoSimboloNegacion(String.valueOf(formula[i + 1]), "");
+                retornoNegacion.add(String.valueOf(formula[i + 1]));
+                buscarNegacionEnFormula(formula, i = formula.length);
+            } else {
+                buscarNegacionEnFormula(formula, i + 1);
+            }
+        } else {
+            buscarNegacionEnFormula(formula, i + 1);
+        }
     }
 
     /**
@@ -384,9 +434,7 @@ public class LogicaSatisfacibilidad {
         int contadorSimbolo = 0;
         for (int i = 0; i < finalFormula.length(); i++) {
             if (finalFormula.charAt(i) != ')' && finalFormula.charAt(i) != '(') {
-                if ((finalFormula.charAt(i) == 'P') || (finalFormula.charAt(i) == 'Q')
-                        || (finalFormula.charAt(i) == 'R') || (finalFormula.charAt(i) == 'S')
-                        || (finalFormula.charAt(i) == 'T')) {
+                if (obtenerLetra(finalFormula.charAt(i))) {
                     ordenSimbolo.add(String.valueOf(finalFormula.charAt(i)));
                     contadorSimbolo = 0;
                 } else if (obtenerSimbolo(finalFormula.charAt(i)).length() > 0) {
@@ -443,6 +491,23 @@ public class LogicaSatisfacibilidad {
             case "^":
                 return true;
             case "v":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public boolean obtenerLetra(char letra) {
+        switch (letra) {
+            case 'P':
+                return true;
+            case 'Q':
+                return true;
+            case 'R':
+                return true;
+            case 'S':
+                return true;
+            case 'T':
                 return true;
             default:
                 return false;
@@ -552,6 +617,22 @@ public class LogicaSatisfacibilidad {
             valoresSegundaLetra = letraYvalor.getParteFinalEvaluada();
         }
 
+        if (!retornoNegacion.isEmpty()) {
+            if (retornoNegacion.get(retornoNegacion.size() - 1).equals(letraUno)) {
+                retornoNegacion.remove(retornoNegacion.size() - 1);
+                valoresPrimeraLetra = retornoNegacion;
+                ordenSimbolo.pop();
+            }
+        }
+
+        if (!retornoNegacion.isEmpty()) {
+            if (retornoNegacion.get(retornoNegacion.size() - 1).equals(letraDos)) {
+                retornoNegacion.remove(retornoNegacion.size() - 1);
+                valoresSegundaLetra = retornoNegacion;
+                ordenSimbolo.pop();
+            }
+        }
+
         for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
 
             if (valoresPrimeraLetra.get(i).equals("0") && valoresSegundaLetra.get(i).equals("0")) {
@@ -591,6 +672,23 @@ public class LogicaSatisfacibilidad {
             valoresPrimeraLetra = letraYvalor.getParteInicialEvaluada();
             valoresSegundaLetra = letraYvalor.getParteFinalEvaluada();
         }
+
+        if (!retornoNegacion.isEmpty()) {
+            if (retornoNegacion.get(retornoNegacion.size() - 1).equals(letraUno)) {
+                retornoNegacion.remove(retornoNegacion.size() - 1);
+                valoresPrimeraLetra = retornoNegacion;
+                ordenSimbolo.pop();
+            }
+        }
+
+        if (!retornoNegacion.isEmpty()) {
+            if (retornoNegacion.get(retornoNegacion.size() - 1).equals(letraDos)) {
+                retornoNegacion.remove(retornoNegacion.size() - 1);
+                valoresSegundaLetra = retornoNegacion;
+                ordenSimbolo.pop();
+            }
+        }
+
         for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
             if (valoresPrimeraLetra.get(i).equals("1") && valoresSegundaLetra.get(i).equals("1")) {
                 retorno.add("1");
@@ -631,6 +729,22 @@ public class LogicaSatisfacibilidad {
             valoresSegundaLetra = letraYvalor.getParteFinalEvaluada();
         }
 
+        if (!retornoNegacion.isEmpty()) {
+            if (retornoNegacion.get(retornoNegacion.size() - 1).equals(letraUno)) {
+                retornoNegacion.remove(retornoNegacion.size() - 1);
+                valoresPrimeraLetra = retornoNegacion;
+                ordenSimbolo.pop();
+            }
+        }
+
+        if (!retornoNegacion.isEmpty()) {
+            if (retornoNegacion.get(retornoNegacion.size() - 1).equals(letraDos)) {
+                retornoNegacion.remove(retornoNegacion.size() - 1);
+                valoresSegundaLetra = retornoNegacion;
+                ordenSimbolo.pop();
+            }
+        }
+
         for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
             if (valoresPrimeraLetra.get(i).equals("1") && valoresSegundaLetra.get(i).equals("0")) {
                 retorno.add("0");
@@ -669,6 +783,22 @@ public class LogicaSatisfacibilidad {
         if (!letraYvalor.getParteInicialEvaluada().isEmpty() && !letraYvalor.getParteFinalEvaluada().isEmpty()) {
             valoresPrimeraLetra = letraYvalor.getParteInicialEvaluada();
             valoresSegundaLetra = letraYvalor.getParteFinalEvaluada();
+        }
+
+        if (!retornoNegacion.isEmpty()) {
+            if (retornoNegacion.get(retornoNegacion.size() - 1).equals(letraUno)) {
+                retornoNegacion.remove(retornoNegacion.size() - 1);
+                valoresPrimeraLetra = retornoNegacion;
+                ordenSimbolo.pop();
+            }
+        }
+
+        if (!retornoNegacion.isEmpty()) {
+            if (retornoNegacion.get(retornoNegacion.size() - 1).equals(letraDos)) {
+                retornoNegacion.remove(retornoNegacion.size() - 1);
+                valoresSegundaLetra = retornoNegacion;
+                ordenSimbolo.pop();
+            }
         }
 
         for (int i = 0; i < valoresPrimeraLetra.size(); i++) {
@@ -816,6 +946,13 @@ public class LogicaSatisfacibilidad {
         return false;
     }
 
+    /**
+     * metodo que nos permite agregar a un arraylist el resultado de cada una de
+     * las formulas agregadas
+     *
+     * @param operadorPrincipal, el operador principal para de acuerdo a la
+     * evaluacion de los fragemntos ssaber el resultado
+     */
     public void resultadoFormula(String operadorPrincipal) {
         System.out.println("el resultado de la formula es " + llamarMetodo(operadorPrincipal, "", "", ""));
         letraYvalor.setResultadoEvaluacion(llamarMetodo(operadorPrincipal, "", "", ""));
@@ -823,84 +960,100 @@ public class LogicaSatisfacibilidad {
 
     }
 
+    /**
+     * metodo que nos permite cargar la tabla
+     *
+     * @param datos, la tabla que se va a cargar
+     */
     public void cargarTabla(JTable datos) {
-        for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
-            modeloTabla.addColumn(letraYvalor.getFormulas().get(i));
-        }
+        DefaultTableModel modeloTabla = new DefaultTableModel();
         datos.removeAll();
 
-        String[] fila = new String[letraYvalor.getFormulas().size()];
+        if (letraYvalor.getResultadoEvaluacionFomulas().size() >= 3) {
 
-        int contador = 0;
-        int iterador = 0;
-
-        for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
-            while (contador < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
-                fila[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contador);
-                modeloTabla.addRow(fila);
-                contador++;
+            for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
+                modeloTabla.addColumn(letraYvalor.getFormulas().get(i));
             }
-            contador = 0;
-        }
-        datos.setModel(modeloTabla);
+            datos.removeAll();
 
-        System.out.println("");
+            String[] fila = new String[letraYvalor.getFormulas().size()];
 
-        int tamanio = letraYvalor.getResultadoEvaluacionFomulas().get(0).size();
-        int resul = tamanio * (letraYvalor.getFormulas().size() - 1);
-        System.out.println("El result es: " + resul);
-        for (int i = 0; i < resul; i++) {
-            modeloTabla.removeRow(0);
-        }
+            int contador = 0;
+            int iterador = 0;
 
-        String[] filaDos = new String[letraYvalor.getFormulas().size()];
-        int contadorDos = 0;
-        int iteradorDos = 0;
-
-        for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
-            while (contadorDos < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
-                filaDos[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contadorDos);
-                modeloTabla.setValueAt(filaDos[i], contadorDos, i);
-                contadorDos++;
+            for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
+                while (contador < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
+                    fila[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contador);
+                    modeloTabla.addRow(fila);
+                    contador++;
+                }
+                contador = 0;
             }
-            contadorDos = 0;
-        }
-        datos.setModel(modeloTabla);
-        generarSatisfacibilidad();
+            datos.setModel(modeloTabla);
+            int tamanio = letraYvalor.getResultadoEvaluacionFomulas().get(0).size();
+            int resul = tamanio * (letraYvalor.getFormulas().size() - 1);
+            for (int i = 0; i < resul; i++) {
+                modeloTabla.removeRow(0);
+            }
 
+            String[] filaDos = new String[letraYvalor.getFormulas().size()];
+            int contadorDos = 0;
+            int iteradorDos = 0;
+
+            for (int i = 0; i <= letraYvalor.getFormulas().size() - 1; i++) {
+                while (contadorDos < letraYvalor.getResultadoEvaluacionFomulas().get(i).size()) {
+                    filaDos[i] = letraYvalor.getResultadoEvaluacionFomulas().get(i).get(contadorDos);
+                    modeloTabla.setValueAt(filaDos[i], contadorDos, i);
+                    contadorDos++;
+                }
+                contadorDos = 0;
+            }
+            datos.setModel(modeloTabla);
+            this.verInterfazTabla = true;
+        } else {
+            this.verInterfazTabla = false;
+            JOptionPane.showMessageDialog(null, "Debe de ingresar por lo menos tres formulas proposicionales");
+        }
     }
 
+    /**
+     * metodo que nos permite evaluar la satisfacibilidad del conjunto de
+     * formulas
+     */
     public void generarSatisfacibilidad() {
         ArrayList<Integer> posicionesUnos = new ArrayList<>();
-        ArrayList<Integer> satisfacible = new ArrayList<>();
+
         int contadorSatisfacisbilidad = 0;
-        for (int i = 0; i < letraYvalor.getResultadoEvaluacionFomulas().size(); i++) {
-            for (int j = 0; j < letraYvalor.getResultadoEvaluacionFomulas().get(i).size(); j++) {
-                if (letraYvalor.getResultadoEvaluacionFomulas().get(i).get(j).equals("1")) {
-                    posicionesUnos.add(j);
-                }
-            }
-        }
-        
-        for (int i = 0; i < posicionesUnos.size(); i++) {
-            for (int j = 0; j < posicionesUnos.size(); j++) {
-                if(posicionesUnos.get(j).equals(posicionesUnos.get(i))){
-                    contadorSatisfacisbilidad++;
-                }
-            }
-            if(contadorSatisfacisbilidad == letraYvalor.getFormulas().size()){
-                this.satisfacible = "El conjunto de formulas es Satisfacible";
-                break;
-            }else{
-                contadorSatisfacisbilidad=0;
-            }
-        }
-        
-        
-        if(this.satisfacible.isEmpty()){
-            this.satisfacible ="El conjunto de formulas es Insatisfacible";
-        }
+        if (letraYvalor.getResultadoEvaluacionFomulas().size() >= 3) {
 
+            for (int i = 0; i < letraYvalor.getResultadoEvaluacionFomulas().size(); i++) {
+                for (int j = 0; j < letraYvalor.getResultadoEvaluacionFomulas().get(i).size(); j++) {
+                    if (letraYvalor.getResultadoEvaluacionFomulas().get(i).get(j).equals("1")) {
+                        posicionesUnos.add(j);
+                    }
+                }
+            }
+
+            for (int i = 0; i < posicionesUnos.size(); i++) {
+                for (int j = 0; j < posicionesUnos.size(); j++) {
+                    if (posicionesUnos.get(j).equals(posicionesUnos.get(i))) {
+                        contadorSatisfacisbilidad++;
+                    }
+                }
+                if (contadorSatisfacisbilidad == letraYvalor.getFormulas().size()) {
+                    this.satisfacible = "El conjunto de formulas es Satisfacible";
+                    break;
+                } else {
+                    contadorSatisfacisbilidad = 0;
+                }
+            }
+
+            if (this.satisfacible.isEmpty()) {
+                this.satisfacible = "El conjunto de formulas es Insatisfacible";
+            }
+            this.verMensajeSatisfacible = true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe de ingresar por lo menos tres formulas proposicionales");
+        }
     }
-
 }
