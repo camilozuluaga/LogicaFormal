@@ -393,11 +393,6 @@ public class LogicaSatisfacibilidad {
             }
 
         } else {
-            if (fragmentoFormula.toCharArray()[2] == '~') {
-                String negacion = "~" + fragmentoFormula.toCharArray()[4];
-                this.negacionPrincipio = negacion;
-                letraYvalor.getValor().put(negacion, llamarMetodo("~", String.valueOf(fragmentoFormula.toCharArray()[4]), "", ""));
-            }
             buscarNegacionEnFormula(verificarFormula.toCharArray(), 0);
             retorno = evaluarFormula();
         }
