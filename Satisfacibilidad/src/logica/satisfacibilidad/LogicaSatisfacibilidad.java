@@ -899,7 +899,9 @@ public class LogicaSatisfacibilidad {
             }
 
             aux = cabeza;
-            cabeza = ordenSimbolo.pop();
+            if (!ordenSimbolo.isEmpty()) {
+                cabeza = ordenSimbolo.pop();
+            }
         }
 
         return letraYvalor.getResultadoEvaluacion();
@@ -958,9 +960,11 @@ public class LogicaSatisfacibilidad {
      * evaluacion de los fragemntos ssaber el resultado
      */
     public void resultadoFormula(String operadorPrincipal) {
-        System.out.println("el resultado de la formula es " + llamarMetodo(operadorPrincipal, "", "", ""));
-        letraYvalor.setResultadoEvaluacion(llamarMetodo(operadorPrincipal, "", "", ""));
-        letraYvalor.getResultadoEvaluacionFomulas().add(llamarMetodo(operadorPrincipal, "", "", ""));
+        System.out.println(operadorPrincipal);
+        ArrayList<String> resultadoEvaluacion = llamarMetodo(operadorPrincipal, "", "", "");
+        System.out.println("el resultado de la formula es " + resultadoEvaluacion);
+        letraYvalor.setResultadoEvaluacion(resultadoEvaluacion);
+        letraYvalor.getResultadoEvaluacionFomulas().add(resultadoEvaluacion);
 
     }
 
@@ -974,7 +978,7 @@ public class LogicaSatisfacibilidad {
         datos.removeAll();
         ArrayList<String> formulas = new ArrayList<>();
         if (!letraYvalor.getFormulas().isEmpty()) {
-            for (int i = 1; i < letraYvalor.getFormulas().size(); i++) {
+            for (int i = 0; i < letraYvalor.getFormulas().size(); i++) {
                 if (formulas.isEmpty()) {
                     formulas.add(letraYvalor.getFormulas().get(i));
                 } else if (!formulas.contains(letraYvalor.getFormulas().get(i))) {
