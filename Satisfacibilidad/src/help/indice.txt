@@ -10,3 +10,4 @@
       - [Tabla Resultados][importar]
    |[Satisfacibilidad][eliminar]
       - [Satisfacibilidad de las Formulas][editar]
+      - [Argumento valido][valido]
