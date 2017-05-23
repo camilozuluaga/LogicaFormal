@@ -265,6 +265,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        txtInsertarFormula.setEditable(false);
         txtInsertarFormula.setColumns(20);
         txtInsertarFormula.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         txtInsertarFormula.setForeground(new java.awt.Color(30, 42, 63));
